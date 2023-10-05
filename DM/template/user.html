@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Information</title>
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between; /* Align items to the right */
+        }
+        h1 {
+            margin: 0;
+        }
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+        p {
+            line-height: 1.5;
+        }
+        .logout-button {
+            background-color: #bb2d3b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underlines from links */
+            float: right; /* Float the button to the right */
+            margin-right: 20px; /* Add some margin for spacing */
+        }
+        .logout-button:hover {
+            background-color: #ff3e4d;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Disaster Information</h1>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="logout-button" type="submit">Logout</button>
+        </form>
+    </header>
+    <main>
+        <h2>Current Disasters</h2>
+        <p>
+            Here, you can find information about ongoing disasters and their impact around the world.
+        </p>
+
+        <!-- Add disaster information here as needed -->
+
+        <h2>Safety Tips</h2>
+        <p>
+            It's essential to stay prepared for disasters. Here are some general safety tips:
+        </p>
+        <ul>
+            <li>Have an emergency kit ready with essential supplies.</li>
+            <li>Stay informed through local authorities and news outlets.</li>
+            <li>Follow evacuation orders and seek higher ground in floods.</li>
+            <li>Keep a communication plan with your family.</li>
+        </ul>
+    </main>
+</body>
+</html>

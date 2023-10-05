@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            background-image: url("{% static 'img/dashboard.jpg' %}"); /* Add your background image URL here */
+            background-size: cover;
+            background-repeat: no-repeat;
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        /* Style the cards */
+        .card {
+            margin-bottom: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* Style the buttons */
+        .btn-primary {
+            background-color: #01d262;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underlines from links */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-danger {
+            background-color: #01d262;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            text-decoration: none; /* Remove underlines from links */
+        }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Your Disaster Management Dashboard, {{ request.user.username }}!</h1>
+
+    <div class="card">
+        <h2 class="card-title">Emergency Alerts</h2>
+        <p class="card-text">Stay informed about the latest emergency alerts and updates in your area.</p>
+        <a href="#" class="btn btn-primary">View Alerts</a>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Disaster Preparedness</h2>
+        <p class="card-text">Learn how to prepare for disasters and protect your family and community.</p>
+        <a href="#" class="btn btn-primary">Get Prepared</a>
+    </div>
+
+    <div class="card">
+        <h2 class="card-title">Resources</h2>
+        <p class="card-text">Access valuable resources and information related to disaster management.</p>
+        <a href="#" class="btn btn-primary">Explore Resources</a>
+    </div>
+
+    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+</body>
+</html>
