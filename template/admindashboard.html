@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,12 +8,13 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f2f2f2;
+            background-image: url("{% static 'img/tsunami.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            background-position: center;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
-
         header {
             background-color: #4CAF50;
             color: #fff;
@@ -78,11 +80,13 @@
     <header>
         <h1>AidLink Admin Dashboard</h1>
         <ul>
-            <li><a href="/admindashboard">Dashboard Home</a></li>
+            <li><a href="/ ">Home</a></li>
             <li><a href="/admin_view_users">View Users</a></li>
             <li><a href="/admin_view_civilians">View Civilians</a></li>
             <li><a href="/admin_view_coordinators">View Coordinators</a></li>
-            <li><a href="/add_admin_coordinators">Add Coordinators</a></li>
+            <li><a href="/coorreg">Add Coordinators</a></li>
+            <li><a href="/add_camp">Add camp</a></li>
+            <li><a href="/view_camps">View Camps</a></li>
             <!-- Add more links for your admin actions -->
         </ul>
         <div class="logout">

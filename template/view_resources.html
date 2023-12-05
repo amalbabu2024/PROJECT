@@ -1,0 +1,163 @@
+{% extends 'coordinators_dashboard.html' %}
+
+{% block content %}
+    <style>
+        /* Additional styles for resources table */
+        h1 {
+            display: none; /* Hiding the h1 element */
+        }
+        table {
+            width: 80%;
+            margin: 40px auto; /* Increased margin to move the table down */
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        caption {
+            caption-side: top;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .edit-btn, .delete-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .delete-btn {
+            background-color: #f44336;
+        }
+    </style>
+
+    <table>
+        <caption>Available Resources</caption>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Location</th> <!-- Added location header -->
+            <th>Action</th> <!-- Added action header -->
+        </tr>
+        {% for resource in resources %}
+        <tr>
+            <td>{{ resource.name }}</td>
+            <td>{{ resource.description }}</td>
+            <td>{{ resource.type }}</td>
+            <td>{{ resource.quantity }}</td>
+            <td>{{ resource.location }}</td> <!-- Added location data -->
+            <td class="btn-container">
+                <button class="edit-btn" onclick="window.location.href='{% url 'edit_resource' resource.id %}'">Edit</button>
+                <button class="delete-btn" onclick="window.location.href='{% url 'delete_resource' resource.id %}'">Delete</button>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">No resources available.</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends 'coordinators_dashboard.html' %}
+
+{% block content %}
+    <style>
+        /* Additional styles for resources table */
+        h1 {
+            display: none; /* Hiding the h1 element */
+        }
+        table {
+            width: 80%;
+            margin: 40px auto; /* Increased margin to move the table down */
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        caption {
+            caption-side: top;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <table>
+        <caption>Available Resources</caption>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Location</th> <!-- Added location header -->
+        </tr>
+        {% for resource in resources %}
+        <tr>
+            <td>{{ resource.name }}</td>
+            <td>{{ resource.description }}</td>
+            <td>{{ resource.type }}</td>
+            <td>{{ resource.quantity }}</td>
+            <td>{{ resource.location }}</td> <!-- Added location data -->
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No resources available.</td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %} {% endcomment %}

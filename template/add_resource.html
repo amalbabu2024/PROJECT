@@ -9,7 +9,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             background-color: #f9f9f9;
-            text-align: center; /* Aligns form center */
+            text-align: center;
         }
 
         .add-resource-form h1 {
@@ -23,7 +23,7 @@
         }
 
         .add-resource-form input[type="text"] {
-            width: calc(100% - 16px); /* Adjusting width and accounting for padding and border */
+            width: calc(100% - 16px);
             padding: 8px;
             margin-top: 5px;
             margin-bottom: 10px;
@@ -33,7 +33,7 @@
         }
 
         .add-resource-form input[type="submit"] {
-            width: calc(100% - 16px); /* Adjusting width */
+            width: calc(100% - 16px);
             background-color: #4CAF50;
             color: white;
             padding: 12px 20px;
@@ -50,21 +50,8 @@
 
     <form method="post" class="add-resource-form">
         {% csrf_token %}
-        <h1>Add a New Resource</h1> <!-- Moved inside the form -->
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name">
-
-        <label for="type">Type:</label>
-        <input type="text" id="type" name="type">
-
-        <label for="quantity">Quantity:</label>
-        <input type="text" id="quantity" name="quantity"> <!-- Changed to text type -->
-
+        {{ form.as_p }}
         <input type="submit" value="Add Resource">
     </form>
 {% endblock %}
-
-
-
-
 

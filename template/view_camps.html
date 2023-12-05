@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>View Camps</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Additional CSS for View Camps page */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'img/flood.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.5); /* Set background color with transparency */
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            background-color: rgba(255, 255, 255, 0.5); /* Set background color with transparency */
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        li p {
+            margin: 5px 0;
+            color: #000; /* Set text color to black for better readability on a light background */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="searchInput" onkeyup="search()" class="form-control" placeholder="Search for camps...">
+        </div>
+        <ul id="campsList" class="list-unstyled">
+            {% for camp in camps %}
+                <li class="mb-3 p-3 border">
+                    <p class="font-weight-bold">{{ camp.camp_name }}</p>
+                    <p>Location: {{ camp.camp_location }}</p>
+                    <p>Capacity: {{ camp.capacity }}</p>
+                    <p>Contact: {{ camp.contact_phone }}, {{ camp.contact_email }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function search() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const ul = document.getElementById('campsList');
+            const li = ul.getElementsByTagName('li');
+    
+            for (let i = 0; i < li.length; i++) {
+                const campName = li[i].getElementsByTagName('p')[0].innerText.toUpperCase(); // First paragraph contains camp name
+                const campLocation = li[i].getElementsByTagName('p')[1].innerText.toUpperCase(); // Second paragraph contains location
+                const capacity = li[i].getElementsByTagName('p')[2].innerText.toUpperCase(); // Third paragraph contains capacity
+                const contactInfo = li[i].getElementsByTagName('p')[3].innerText.toUpperCase(); // Fourth paragraph contains contact info
+    
+                // Check if any field contains the search filter
+                if (campName.includes(filter) || campLocation.includes(filter) || capacity.includes(filter) || contactInfo.includes(filter)) {
+                    li[i].style.display = '';
+                } else {
+                    li[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+    
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <style>
+        /* Your custom CSS styles go here */
+        body {
+            background-image: url("{% static 'img/firefighters.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 20px;
+        }
+
+        .message-box {
+            padding: 10px;
+            margin-bottom: 10px;
+            color: #000; /* Set text color to black */
+            background-color: #f8f9fa; /* Use a light shade for the background */
+        }
+
+        /* Define unique colors for each priority */
+        .message-box.priority-urgent {
+            background-color: #ffe5e5; /* Light red for Urgent */
+        }
+
+        .message-box.priority-important {
+            background-color: #fff2e5; /* Light orange for Important */
+        }
+
+        .message-box.priority-informational {
+            background-color: #fff9e5; /* Light yellow for Informational */
+        }
+
+        .message-box.priority-decision {
+            background-color: #e5ffe5; /* Light green for Decision */
+        }
+
+        .message-box.priority-routine {
+            background-color: #e5f1ff; /* Light blue for Routine */
+        }
+
+        .message-box.priority-fyi {
+            background-color: #ede5ff; /* Light indigo for FYI */
+        }
+
+        .message-box.priority-acknowledgment {
+            background-color: #f5e5ff; /* Light violet (purple) for Acknowledgment */
+        }
+
+        .message-box.priority-appreciation {
+            background-color: #ffe5f2; /* Light pink for Appreciation */
+        }
+
+        .message-box.priority-miscellaneous {
+            background-color: #f5e5da; /* Light brown for Miscellaneous */
+        }
+
+        /* Adjust the order of content */
+        h5 {
+            margin-bottom: 5px;
+        }
+
+        p.priority {
+            margin-bottom: 5px;
+        }
+
+        p.content {
+            margin-bottom: 10px;
+        }
+
+        p.timestamp {
+            font-size: 0.9rem;
+        }
+
+        /* Additional styling */
+        .container {
+            max-width: 800px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Notifications</h2>
+    {% for message in messages %}
+        <div class="message-box priority-{{ message.priority.lower }}">
+            <h5>{{ message.priority }}</h5>
+            <p class="content">{{ message.content }}</p>
+            <p class="category">Category : {{ message.category }}</p>
+            <p class="timestamp">Date and Time : {{ message.timestamp }}</p>
+        </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

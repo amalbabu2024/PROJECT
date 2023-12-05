@@ -1,0 +1,55 @@
+<!-- view_locations.html -->
+{% extends 'base_map.html' %}
+
+{% block content %}
+  <h2>View Camp Locations</h2>
+  <div id="map" style="height: 650px;"></div> <!-- Increase the height as needed -->
+
+  <script>
+    // Set the default view to Kerala
+    var mymap = L.map('map').setView([10.8505, 76.2711], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mymap);
+
+    // Add markers for each location
+    {% for location in locations %}
+      L.marker([{{ location.latitude }}, {{ location.longitude }}]).addTo(mymap)
+        .bindPopup("{{ location.name }}");
+    {% endfor %}
+  </script>
+{% endblock %}
+
+
+
+
+
+{% comment %} <!-- view_locations.html -->
+{% extends 'base_map.html' %}
+
+{% block content %}
+  <h2>View Locations</h2>
+  <div id="map" style="height: 400px;"></div>
+
+  <script>
+    // Set the default view to Kerala
+    var mymap = L.map('map').setView([10.8505, 76.2711], 7);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(mymap);
+
+    // Add markers for each location
+    {% for location in locations %}
+      L.marker([{{ location.latitude }}, {{ location.longitude }}]).addTo(mymap)
+        .bindPopup("{{ location.name }}");
+    {% endfor %}
+  </script>
+{% endblock %} {% endcomment %}
+
+
+
+
+
+

@@ -1,0 +1,102 @@
+{% extends "admindashboard.html" %}
+
+{% block content %}
+  <style>
+    /* Add your CSS styles here */
+    h2 {
+      text-align: center;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    thead {
+      background-color: #f2f2f2;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    td {
+      color: #333;
+    }
+
+    .role {
+      text-transform: capitalize;
+    }
+  </style>
+
+  <h2>Users List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Username</th>
+        <th>Roles</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>
+            {% if user.is_civilian %}<span class="role">Civilian</span>{% endif %}
+            {% if user.is_coordinator %}{% if user.is_civilian %}, {% endif %}<span class="role">Coordinator</span>{% endif %}
+            {% if user.is_admin %}{% if user.is_civilian or user.is_coordinator %}, {% endif %}<span class="role">Admin</span>{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{% comment %} {% extends "admindashboard.html" %}
+
+{% block content %}
+  <h2>Users List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Username</th>
+        <th>Roles</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.email }}</td>
+          <td>{{ user.username }}</td>
+          <td>
+            {% if user.is_civilian %}Civilian{% endif %}
+            {% if user.is_coordinator %}{% if user.is_civilian %}, {% endif %}Coordinator{% endif %}
+            {% if user.is_admin %}{% if user.is_civilian or user.is_coordinator %}, {% endif %}Admin{% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %} {% endcomment %}

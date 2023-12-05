@@ -1,0 +1,99 @@
+{% extends 'admindashboard.html' %}
+
+{% block content %}
+    <style>
+        /* Add your CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        h3 {
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            display: inline-block;
+            margin: 0;
+        }
+
+        label {
+            margin-right: 5px;
+        }
+
+        .update-btn {
+            padding: 8px 12px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+
+    <div class="navbar">
+        <h3>Coordinator List</h3>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Coordinator Name</th>
+                <th>Email</th>
+                <th>Status & Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for coordinator in coordinators %}
+                <tr>
+                    <td>{{ coordinator.user.username }}</td>
+                    <td>{{ coordinator.user.email }}</td>
+                    <td>
+                        <form method="post" action="{% url 'change_coordinator_status' coordinator.user.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="coordinator_id" value="{{ coordinator.user.id }}">
+                            <label for="status_active_{{ coordinator.user.id }}">Active</label>
+                            <input type="radio" name="status" value="active" id="status_active_{{ coordinator.user.id }}" {% if coordinator.user.is_active %} checked {% endif %}>
+                            <label for="status_inactive_{{ coordinator.user.id }}">Inactive</label>
+                            <input type="radio" name="status" value="inactive" id="status_inactive_{{ coordinator.user.id }}" {% if not coordinator.user.is_active %} checked {% endif %}>
+                            &nbsp;&nbsp;<button type="submit" class="update-btn">Update</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+
+
+
+
+
+
+

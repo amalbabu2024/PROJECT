@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Location</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('your-background-image.jpg'); /* Replace 'your-background-image.jpg' with your actual image file */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.8); /* Adjust the alpha value for transparency */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #4CAF50; /* Updated text color */
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #4CAF50; /* Updated label text color */
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50; /* Updated button background color */
+            color: #fff; /* Updated button text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker color on hover */
+        }
+        .contact-map {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 aspect ratio (height: width) */
+        }
+        .contact-map iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="overlay">
+        <div class="container">
+            <h2>Add Location</h2>
+            <form method="post" action="{% url 'add_location' %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="id_name">Location Name:</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_latitude">Latitude:</label>
+                    {{ form.latitude }}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_longitude">Longitude:</label>
+                    {{ form.longitude }}
+                </div>
+
+                <!-- Add other form fields as needed -->
+
+                <button type="submit">Save Location</button>
+            </form>
+        </div>
+    </div>
+    <div class="contact-map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15713.254789722517!2d76.2673046875!3d9.939950606303696!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b081d8a6bf8f9b1%3A0x156bfc6a9e75c966!2sKochi%2C%20Kerala!5e0!3m2!1sen!2sin!4v1698781234567!5m2!1sen!2sin!14z/data=!4m6!3m5!1s0x3b080d514abec6bf:0xbd582caa5844192!8m2!3d9.9312328!4d76.2673041!16zL20vMGZsMnM?hl=en&entry=ttu" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+    
+    
+    
+</body>
+
+</html>
