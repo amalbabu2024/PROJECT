@@ -4,11 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import get_user_model
-
 from .models import User, Civilian, Coordinator
 
-def register(request):
-    return render(request,'signup.html')
 
 
 def index(request):
@@ -52,7 +49,7 @@ def cooreg(request):
         coordinator = Coordinator(user=user)
         coordinator.save()
 
-        return redirect('/log')
+        return redirect('/admindashboard')
 
     return render(request,'signup_coordinator.html')
 
@@ -160,34 +157,6 @@ def admin_view_coordinators(request):
 
 
 
-from django.shortcuts import render, redirect
-from .forms import CoordinatorForm
-from .models import User
-
-def add_admin_coordinators(request):
-    if request.method == 'POST':
-        form = CoordinatorForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            # Create a new user with the 'coordinator' role
-            user = User.objects.create_user(username=username, email=email, password=password)
-            user.is_coordinator = True
-            user.save()
-
-            # Optionally, you can add a success message here.
-            return redirect('admindashboard')  # Redirect to the admin dashboard or the appropriate page.
-
-    else:
-        form = CoordinatorForm()
-
-    return render(request, 'add_admin_coordinators.html', {'form': form})
-
-
-
-
 from django.shortcuts import render
 from .models import Coordinator
 
@@ -196,7 +165,6 @@ def coordinators_profile(request):
     coordinator = Coordinator.objects.get(user=request.user)
 
     return render(request, 'coordinators_profile.html', {'coordinator': coordinator})
-
 
 
 from django.shortcuts import render, redirect
@@ -208,13 +176,13 @@ def edit_coordinator_profile(request):
     if request.method == 'POST':
         coordinator.first_name = request.POST.get('first_name')
         coordinator.last_name = request.POST.get('last_name')
+        coordinator.contact_email = request.POST.get('contact_email')
         coordinator.contact_phone_number = request.POST.get('contact_phone_number')
-        coordinator.verification = request.POST.get('verification_status')
-        coordinator.registered_through_form = request.POST.get('registered_through_form')
         coordinator.save()
         return redirect('coordinators_profile')  # Redirect to the coordinator profile page after saving the changes
 
     return render(request, 'edit_coordinator_profile.html', {'coordinator': coordinator})
+
 
 
 
@@ -297,10 +265,9 @@ def add_resource(request):
         form = ResourceForm(request.POST)
         if form.is_valid():
             form.save()  # Save the form data to the database
-            # Redirect or show success message
+            return redirect('view_resources') # Redirect or show success message
     else:
         form = ResourceForm()
-    
     return render(request, 'add_resource.html', {'form': form})
 
 from django.shortcuts import render
@@ -309,6 +276,28 @@ from .models import Resource
 def view_resources(request):
     resources = Resource.objects.all()
     return render(request, 'view_resources.html', {'resources': resources})
+
+def edit_resource(request, resource_id):
+    resource = get_object_or_404(Resource, id=resource_id)
+    
+    if request.method == 'POST':
+        form = ResourceForm(request.POST, instance=resource)
+        if form.is_valid():
+            form.save()
+            return redirect('view_resources')
+    else:
+        form = ResourceForm(instance=resource)
+    
+    return render(request, 'edit_resource.html', {'form': form, 'resource': resource})
+
+def delete_resource(request, resource_id):
+    resource = get_object_or_404(Resource, id=resource_id)
+    
+    if request.method == 'POST':
+        resource.delete()
+        return redirect('view_resources')
+    
+    return render(request, 'delete_resource.html', {'resource': resource})
 
 
 
@@ -388,3 +377,342 @@ def change_civilian_status(request, civilian_id):
         messages.success(request, f'Status for {civilian.username} has been changed to {new_status}.')
     
     return redirect('admin_view_civilians')
+
+
+
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import Camp
+from .forms import CampForm
+
+# View to add a camp
+def add_camp(request):
+    if request.method == 'POST':
+        form = CampForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('add_location')
+    else:
+        form = CampForm()
+    return render(request, 'add_camp.html', {'form': form})
+
+
+from django.shortcuts import render
+from .models import Camp
+
+def view_camps(request):
+    camps = Camp.objects.all()
+    return render(request, 'view_camps.html', {'camps': camps})
+
+
+
+# views.py
+from django.shortcuts import render, redirect
+from .models import MarkedLocation
+from .forms import MarkedLocationForm
+
+def add_location(request):
+    if request.method == 'POST':
+        form = MarkedLocationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('view_locations')
+    else:
+        form = MarkedLocationForm()
+
+    return render(request, 'add_location.html', {'form': form})
+
+def view_locations(request):
+    locations = MarkedLocation.objects.all()
+    return render(request, 'view_locations.html', {'locations': locations})
+
+
+
+
+# views.py
+from django.shortcuts import render, redirect
+from .models import Message
+from .forms import MessageForm
+
+def add_message(request):
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = form.save(commit=False)
+            message.user = request.user
+            message.save()
+            return redirect('message_list')
+    else:
+        form = MessageForm()
+
+    return render(request, 'add_message.html', {'form': form})
+
+def message_list(request):
+    messages = Message.objects.all().order_by('-timestamp')
+    return render(request, 'message_list.html', {'messages': messages})
+
+
+
+
+# # views.py
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Civilian, HelpRequest
+from .forms import HelpRequestForm
+
+@login_required
+def send_help_request(request):
+    civilian = Civilian.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        form = HelpRequestForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            # Save the form data to the HelpRequest model
+            help_request = form.save(commit=False)
+            help_request.civilian = civilian.user  # Assign the User instance
+            help_request.save()
+
+            messages.success(request, "Help request submitted successfully.")
+            return redirect('view_help_requests')
+
+    else:
+        form = HelpRequestForm()
+
+    return render(request, 'send_help_request.html', {'form': form})
+
+
+
+
+
+from django.db.models import Q
+
+def view_help_requests(request):
+    help_requests = HelpRequest.objects.all().order_by('-timestamp')
+
+    if 'search' in request.GET:
+        search_query = request.GET.get('search', '')
+        if search_query:
+            help_requests = help_requests.filter(
+                Q(name__icontains=search_query) |
+                Q(request_type__icontains=search_query) |
+                Q(urgency_level__icontains=search_query) |
+                Q(people_affected__icontains=search_query) |
+                Q(details__icontains=search_query) |
+                Q(language_preference__icontains=search_query) |
+                Q(special_needs__icontains=search_query) |
+                Q(relationship_to_situation__icontains=search_query) |
+                Q(contact_number__icontains=search_query) |
+                Q(current_location__icontains=search_query)
+            )
+
+    return render(request, 'view_help_requests.html', {'help_requests': help_requests})
+
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from .models import HelpRequest
+
+
+# views.py
+
+from django.shortcuts import render
+from .models import HelpRequest
+
+def view_help_requests(request):
+    # Filter help requests based on the currently logged-in civilian
+    help_requests = HelpRequest.objects.filter(civilian=request.user)
+
+    return render(request, 'view_help_requests.html', {'help_requests': help_requests})
+
+# views.py
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import HelpRequest
+from .forms import HelpRequestForm  # Assuming you have a form for editing help requests
+
+def edit_help_request(request, request_id):
+    help_request = get_object_or_404(HelpRequest, id=request_id)
+
+    if request.method == 'POST':
+        form = HelpRequestForm(request.POST, instance=help_request)
+        if form.is_valid():
+            form.save()
+            return redirect('view_help_requests')
+    else:
+        form = HelpRequestForm(instance=help_request)
+
+    return render(request, 'edit_help_request.html', {'form': form, 'help_request': help_request})
+
+def delete_help_request(request, request_id):
+    help_request = get_object_or_404(HelpRequest, id=request_id)
+    
+    if request.method == 'POST':
+        help_request.delete()
+        return redirect('view_help_requests')
+
+    return render(request, 'delete_help_request.html', {'help_request': help_request})
+
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import render
+from .models import HelpRequest
+
+def coordinator_view(request):
+    category_filter = request.GET.get('category', '')
+    status_filter = request.GET.get('status', '')
+
+    help_requests = HelpRequest.objects.all()
+
+    # Apply category filter if selected
+    if category_filter:
+        help_requests = help_requests.filter(urgency_level=category_filter)
+
+    # Apply status filter if selected
+    if status_filter:
+        help_requests = help_requests.filter(request_status=status_filter)
+
+    return render(request, 'coordinator_view.html', {'help_requests': help_requests})
+
+
+
+
+# views.py
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import HelpRequest
+
+def set_request_status(request, request_id):
+    if request.method == 'POST':
+        # Retrieve the HelpRequest object based on request_id
+        help_request = HelpRequest.objects.get(pk=request_id)
+
+        # Update the request status based on the form data
+        new_status = request.POST.get('status')
+        help_request.request_status = new_status
+        help_request.save()
+
+        messages.success(request, f"Request status updated to {new_status}.")
+
+    return redirect('coordinator_view')  # Redirect to the coordinator_view page
+
+
+
+
+from django.shortcuts import render
+from .models import HelpRequest
+
+def coordinator_view(request):
+    # Get filter parameters from the request
+    urgency_level = request.GET.get('urgency_level', '')
+    status = request.GET.get('status', '')
+
+    # Filter help requests based on urgency level and status
+    help_requests = HelpRequest.objects.all()
+
+    if urgency_level:
+        help_requests = help_requests.filter(urgency_level=urgency_level)
+
+    if status:
+        help_requests = help_requests.filter(request_status=status)
+
+    # Render the template with the filtered help requests
+    return render(request, 'coordinator_view.html', {'help_requests': help_requests})
+
+
+
+
+
+
+# views.py
+from django.shortcuts import render, redirect
+from .models import VolunteerRequest
+from .forms import VolunteerRequestForm
+
+def volunteer_request(request):
+    if request.method == 'POST':
+        form = VolunteerRequestForm(request.POST)
+        if form.is_valid():
+            volunteer_request = form.save(commit=False)
+            volunteer_request.user = request.user
+            volunteer_request.save()
+            return redirect('volunteer_request_success')
+    else:
+        form = VolunteerRequestForm()
+
+    return render(request, 'volunteer_request.html', {'form': form})
+
+def volunteer_request_success(request):
+    return render(request, 'volunteer_request_success.html')
+
+
+# views.py
+from django.shortcuts import render
+from .models import VolunteerRequest
+
+def manage_volunteer_requests(request):
+    volunteer_requests = VolunteerRequest.objects.all()
+    return render(request, 'manage_volunteer_requests.html', {'volunteer_requests': volunteer_requests})
+
+
+from django.shortcuts import render
+from .models import VolunteerRequest
+
+def view_volunteer_request(request, request_id):
+    volunteer_request = VolunteerRequest.objects.get(id=request_id)
+    return render(request, 'view_volunteer_request.html', {'volunteer_request': volunteer_request})
+
+
+# In your views.py file
+
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from .models import VolunteerRequest
+
+def update_volunteer_status(request, request_id):
+    volunteer_request = get_object_or_404(VolunteerRequest, id=request_id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        volunteer_request.status = new_status
+        volunteer_request.save()
+
+    return HttpResponseRedirect('/manage_volunteer_requests/')  # Redirect to the manage_volunteer_requests page
+
+
+
+
+
+
+# views.py
+from django.shortcuts import render
+from .models import VolunteerRequest
+
+def view_civilian_request(request):
+    # Assuming you have a way to identify the civilian user (e.g., through authentication)
+    # Replace 'your_civilian_user' with the actual way you identify the civilian user
+    volunteer_requests = VolunteerRequest.objects.filter(user=request.user)
+
+    context = {
+        'volunteer_requests': volunteer_requests,
+    }
+
+    return render(request, 'view_civilian_request.html', context)
