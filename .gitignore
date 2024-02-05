@@ -14,7 +14,16 @@ ENV/
 # mypy
 .mypy_cache/
 
-settings.py
+settings.py/
+
+# django
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
 
 # pycharm
 .idea/
