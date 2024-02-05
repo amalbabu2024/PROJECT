@@ -1,0 +1,188 @@
+<!-- view_help_requests.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help Requests</title>
+
+    <!-- Add background image style -->
+    <style>
+        body {
+            background-image: url("{% static 'img/firefighters.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        /* Style the search bar */
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 8px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Style each request box */
+        .help-request-box {
+            background-color: rgba(255, 255, 255, 0.7); /* Set the alpha value for transparency */
+            border: 1px solid #cccccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px;
+            color: #000; /* Adjust text color for better visibility */
+        }
+
+        /* Add styles for request details */
+        .help-request-box p {
+            margin: 5px 0;
+        }
+
+        /* Style the attachments link */
+        .help-request-box a {
+            color: #007bff; /* Blue color for links */
+            text-decoration: none;
+        }
+
+        .help-request-box a:hover {
+            text-decoration: underline;
+        }
+
+        /* Style attachments image */
+        .help-request-box img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* Status bar styles */
+        .status-bar {
+            height: 5px; /* Smaller height for the status bar */
+            margin-top: 5px; /* Reduced margin for a compact design */
+            margin-bottom: 5px;
+            border-radius: 2px; /* Smaller border radius */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar-inner {
+            height: 100%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        /* Different status colors */
+        .status-bar.sent { background-color: #ffc107; }
+        .status-bar.received { background-color: #28a745; }
+        .status-bar.processing { background-color: #007bff; }
+        .status-bar.completed { background-color: #17a2b8; }
+        .status-bar.rejected { background-color: #dc3545; }
+
+        /* Status label styles */
+        .status-label {
+            font-size: 12px; /* Smaller font size for the label */
+            text-align: center;
+        }
+
+        /* Edit and Delete button styles */
+        .edit-delete-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .edit-delete-buttons a {
+            padding: 8px 16px;
+            font-size: 16px;
+            text-decoration: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .edit-delete-buttons .edit-button {
+            background-color: #007bff; /* Blue color for Edit button */
+            color: #fff;
+        }
+
+        .edit-delete-buttons .delete-button {
+            background-color: #dc3545; /* Red color for Delete button */
+            color: #fff;
+        }
+
+        .edit-delete-buttons a:hover {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h2>Help Requests</h2>
+
+    <!-- Search bar -->
+    <form method="GET" action="{% url 'view_help_requests' %}">
+        <input type="text" name="search" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form>
+
+    {% for help_request in help_requests %}
+        <!-- Display each request in a separate box -->
+        <div class="help-request-box">
+            <strong>{{ help_request.civilian.user.username }} - {{ help_request.request_type }}</strong>
+            <p><strong>Name:</strong> {{ help_request.name }}</p>
+            <p><strong>Urgency Level:</strong> {{ help_request.urgency_level }}</p>
+            <p><strong>People Affected:</strong> {{ help_request.people_affected }}</p>
+            <p><strong>Details:</strong> {{ help_request.details }}</p>
+
+            <!-- Check if 'attachments' has a file before accessing its URL -->
+            {% if help_request.attachments %}
+                <img src="{{ help_request.attachments.url }}" alt="Attachment">
+                <p><strong>Attachments:</strong> {{ help_request.attachments.name }}</p>
+            {% endif %}
+
+            <p><strong>Language Preference:</strong> {{ help_request.language_preference }}</p>
+            <p><strong>Special Needs:</strong> {{ help_request.special_needs }}</p>
+            <p><strong>Incident Datetime:</strong> {{ help_request.incident_datetime }}</p>
+            <p><strong>Relationship to Situation:</strong> {{ help_request.relationship_to_situation }}</p>
+            <p><strong>Contact Number:</strong> {{ help_request.contact_number }}</p>
+            <p><strong>Current Location:</strong> {{ help_request.current_location }}</p>
+            <p><strong>Timestamp:</strong> {{ help_request.timestamp }}</p>
+            <p><strong>Confirmation Checkbox:</strong> {{ help_request.confirmation_checkbox }}</p>
+
+            <!-- Status bar -->
+            <div class="status-bar {{ help_request.get_request_status_display|lower }}">
+                <div class="status-bar-inner" style="width: {{ help_request.request_status|divisibleby:4 }}{% if help_request.request_status|divisibleby:4 %}*25{% endif %}%;"></div>
+            </div>
+
+            <!-- Status label -->
+            <p class="status-label">{{ help_request.get_request_status_display }}</p>
+
+            <!-- Edit and Delete buttons -->
+            <div class="edit-delete-buttons">
+                <a class="edit-button" href="{% url 'edit_help_request' help_request.id %}">Edit</a>
+                <a class="delete-button" href="{% url 'delete_help_request' help_request.id %}">Delete</a>
+            </div>
+        </div>
+    {% endfor %}
+</body>
+</html>

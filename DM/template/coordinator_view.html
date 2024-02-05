@@ -1,0 +1,174 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coordinator View - Help Requests</title>
+
+    <!-- Add background image style -->
+    <style>
+        body {
+            background-image: url("{% static 'img/firefighters.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #fff;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        /* Style the filter and sort form */
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 16px;
+            margin-right: 8px;
+        }
+
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Style each request box */
+        .help-request-box {
+            background-color: rgba(255, 255, 255, 0.7); /* Set the alpha value for transparency */
+            border: 1px solid #cccccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px;
+            color: #000; /* Adjust text color for better visibility */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        /* Add styles for request details */
+        .help-request-box p {
+            margin: 5px 0;
+        }
+
+        /* Coordinator actions styles */
+        .coordinator-actions {
+            flex-shrink: 0;
+        }
+
+        /* Status bar styles */
+        .status-bar {
+            height: 5px; /* Smaller height for the status bar */
+            margin-top: 5px; /* Reduced margin for a compact design */
+            margin-bottom: 5px;
+            border-radius: 2px; /* Smaller border radius */
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .status-bar-inner {
+            height: 100%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        /* Different status colors */
+        .status-bar.sent { background-color: #ffc107; }
+        .status-bar.received { background-color: #28a745; }
+        .status-bar.processing { background-color: #007bff; }
+        .status-bar.completed { background-color: #17a2b8; }
+        .status-bar.rejected { background-color: #dc3545; }
+
+        /* Status label styles */
+        .status-label {
+            font-size: 12px; /* Smaller font size for the label */
+            text-align: center;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Coordinator View - Help Requests</h2>
+
+    <!-- Filter and sort form -->
+    <form method="GET" action="{% url 'coordinator_view' %}">
+        <label for="category">Filter by Urgency Level:</label>
+        <select name="category">
+            <option value="">All</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select>
+
+        <label for="status">Sort by Status:</label>
+        <select name="status">
+            <option value="">None</option>
+            <option value="0">Request Sent</option>
+            <option value="1">Request Received</option>
+            <option value="2">Request Processing</option>
+            <option value="3">Request Completed</option>
+            <option value="4">Request Rejected</option>
+        </select>
+        <button type="submit">Apply</button>
+    </form>
+
+    <!-- Display help requests -->
+    {% for help_request in help_requests %}
+        <!-- Include all fields for each help request and buttons for coordinator actions -->
+        <div class="help-request-box">
+            <div class="request-details">
+                <!-- Display all fields for each help request -->
+                <p><strong>Name:</strong> {{ help_request.name }}</p>
+                <p><strong>Request Type:</strong> {{ help_request.request_type }}</p>
+                <p><strong>Urgency Level:</strong> {{ help_request.urgency_level }}</p>
+                <p><strong>People Affected:</strong> {{ help_request.people_affected }}</p>
+                <p><strong>Details:</strong> {{ help_request.details }}</p>
+                <p><strong>Attachments:</strong> {% if help_request.attachments %}<a href="{{ help_request.attachments.url }}" target="_blank">View Attachment</a>{% endif %}</p>
+                <p><strong>Language Preference:</strong> {{ help_request.language_preference }}</p>
+                <p><strong>Special Needs:</strong> {{ help_request.special_needs }}</p>
+                <p><strong>Incident Datetime:</strong> {{ help_request.incident_datetime }}</p>
+                <p><strong>Relationship to Situation:</strong> {{ help_request.relationship_to_situation }}</p>
+                <p><strong>Contact Number:</strong> {{ help_request.contact_number }}</p>
+                <p><strong>Current Location:</strong> {{ help_request.current_location }}</p>
+                <p><strong>Timestamp:</strong> {{ help_request.timestamp }}</p>
+                <p><strong>Confirmation Checkbox:</strong> {{ help_request.confirmation_checkbox }}</p>
+
+                <!-- Status bar -->
+                <div class="status-bar {{ help_request.get_request_status_display|lower }}">
+                    <div class="status-bar-inner" style="width: {{ help_request.request_status|divisibleby:4 }}{% if help_request.request_status|divisibleby:4 %}*25{% endif %}%;"></div>
+                </div>
+
+                <!-- Status label -->
+                <p class="status-label">{{ help_request.get_request_status_display }}</p>
+            </div>
+
+            <!-- Coordinator actions (buttons to set status) -->
+            <div class="coordinator-actions">
+                <form method="POST" action="{% url 'set_request_status' help_request.id %}">
+                    {% csrf_token %}
+                    <label for="status">Set Status:</label>
+                    <select name="status">
+                        <option value="0">Request Sent</option>
+                        <option value="1">Request Received</option>
+                        <option value="2">Request Processing</option>
+                        <option value="3">Request Completed</option>
+                        <option value="4">Request Rejected</option>
+                    </select>
+                    <button type="submit">Update Status</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</body>
+</html>

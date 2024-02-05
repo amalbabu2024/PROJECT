@@ -1,0 +1,160 @@
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Volunteer Request</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'img/firefighters.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif; /* Set a default font */
+            color: black; /* Set text color to black */
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff; /* Header text color */
+        }
+
+        table {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            color: black; /* Set text color to black */
+        }
+
+        th {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Volunteer Request</h2>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>ID:</th>
+                    <td>{{ volunteer_request.id }}</td>
+                </tr>
+                <!-- Include other fields as needed -->
+                <tr>
+                    <th>Status:</th>
+                    <td>{{ volunteer_request.status }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> {% endcomment %}
+
+
+
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... (your head section) ... -->
+    <style>
+        body {
+            background-image: url("{% static 'img/firefighters.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif; /* Set a default font */
+            color: black; /* Set text color to black */
+        }
+
+        h2 {
+            text-align: center;
+            color: #fff; /* Header text color */
+        }
+
+        table {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            color: black; /* Set text color to black */
+        }
+
+        th {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Volunteer Requests</h2>
+        {% if volunteer_requests %}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <!-- Include other fields as needed -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in volunteer_requests %}
+                        <tr>
+                            <td>{{ request.id }}</td>
+                            <td>{{ request.user.username }}</td>
+                            <td>{{ request.full_name }}</td>
+                            <td>{{ request.email }}</td>
+                            <td>{{ request.status }}</td>
+                            <!-- Include other fields as needed -->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No volunteer requests found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

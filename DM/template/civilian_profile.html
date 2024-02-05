@@ -1,0 +1,63 @@
+{% extends 'civilians_dashboard.html' %}
+
+{% block content %}
+    <div class="profile">
+        <h1>Profile of {{ civilian.user.username }}!</h1>
+        <table class="profile-table">
+            <tr>
+                <th>User Name:</th>
+                <td>{{ civilian.user.username }}</td>
+            </tr>
+            <tr>
+                <th>First Name:</th>
+                <td>{{ civilian.first_name }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>{{ civilian.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Contact Email:</th>
+                <td>{{ civilian.user.email }}</td>
+            </tr>
+            <tr>
+                <th>Contact Phone Number:</th>
+                <td>{{ civilian.phone_number }}</td>
+            </tr>
+            <tr>
+                <th>Country:</th>
+                <td>{{ civilian.country }}</td>
+            </tr>
+            <tr>
+                <th>Gender:</th>
+                <td>{{ civilian.gender }}</td>
+            </tr>
+            <!-- Add more fields as needed -->
+        </table>
+    </div>
+    <!-- Add additional styles for the profile table and background -->
+    <style>
+        .profile {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.5); /* Adjust the alpha (4th value) to control transparency */
+        }
+        .profile h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.5); /* Match the background transparency with the parent div */
+        }
+        .profile-table th, .profile-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+        }
+        .profile-table th {
+            background: #f2f2f2;
+        }
+    </style>
+{% endblock %}

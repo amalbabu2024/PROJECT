@@ -1,0 +1,70 @@
+{% extends 'civilians_dashboard.html' %}
+
+{% block content %}
+    <div class="profile">
+        <h1>Edit Profile of {{ civilian.user.username }}!</h1>
+        <form method="post" id="editprofileform" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" value="{{ civilian.first_name }}"><br><br>
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" value="{{ civilian.last_name }}"><br><br>
+
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" value="{{ civilian.phone_number }}"><br><br>
+
+            <label for="country">Country:</label>
+            <input type="text" id="country" name="country" value="{{ civilian.country }}"><br><br>
+
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender" value="{{ civilian.gender }}"><br><br>
+
+            <input type="submit" value="Update">
+        </form>
+    </div>
+    <!-- Additional styles for the profile and form -->
+    <style>
+        /* Your CSS styles go here */
+        .profile {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.5); /* Adjust the alpha (4th value) to control transparency */
+            width: 50%; /* Define the width of the form */
+            margin: 20px auto; /* Center the form */
+        }
+        .profile h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center; /* Center the title */
+        }
+        .profile form {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile form label {
+            margin-bottom: 10px;
+        }
+        .profile form input[type="text"],
+        .profile form input[type="email"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .profile form input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+        }
+        .profile form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+{% endblock %}
+
+

@@ -1,0 +1,83 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Message</title>
+    <style>
+      /* Add this CSS to your existing code */
+
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f4;
+          background-image: url("{% static 'img/tsunami.jpg' %}");
+          background-size: cover;
+          margin: 0;
+          padding: 0;
+      }
+      .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #fff;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+      }
+      
+      h2 {
+          color: #333;
+          text-align: center;
+      }
+      
+      form {
+          margin-top: 20px;
+      }
+      
+      label {
+          display: block;
+          margin-bottom: 8px;
+      }
+      
+      input[type="text"],
+      input[type="email"],
+      textarea {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 15px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          box-sizing: border-box;
+      }
+      
+      button {
+          background-color: #4CAF50;
+          color: white;
+          padding: 10px 15px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          display: block;
+          width: 100%;
+      }
+      
+      button:hover {
+          background-color: #45a049;
+      }
+      
+    </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Add Message</h2>
+    <form method="post" action="{% url 'add_message' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

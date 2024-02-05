@@ -125,12 +125,39 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'')
 
 
 
+
+
+# settings.py
+
+# ...
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'help_request_attachments')
+
+
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'aidlink.User'
 
-SESSION_ENGINE = "django.contrib.sessions.backends.db"
-SESSION_COOKIE_NAME = "sessionid"
-LOGIN_URL = "login"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'trexlynx007@gmail.com'  
+EMAIL_HOST_PASSWORD = 'pfowlmmeuuszbylz'
+JAZZMIN_SETTINGS={"show_ui_builder" : True}
+
+LOGOUT_REDIRECT_URL='login'
+
+
+
+
+
+

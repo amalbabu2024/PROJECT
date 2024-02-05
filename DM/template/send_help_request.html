@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Help Request</title>
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                    background-image: url("{% static 'img/firefighters.jpg' %}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    padding: 20px;
+                    text-align: center;
+                }
+        
+                h2 {
+                    color: #333;
+                }
+        
+                form {
+                    max-width: 400px;
+                    margin: 0 auto;
+                    background-color: rgba(255, 255, 255, 0.8); /* Adjust the alpha value (0.8) for transparency */
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+        
+                label {
+                    display: block;
+                    margin-bottom: 8px;
+                    font-weight: bold;
+                }
+        
+                input, select, textarea {
+                    width: 100%;
+                    padding: 10px;
+                    margin-bottom: 16px;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    box-sizing: border-box;
+                }
+        
+                button {
+                    background-color: #4CAF50;
+                    color: #fff;
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+        
+                button:hover {
+                    background-color: #45a049;
+                }
+            </style>
+</head>
+<body>
+    <h2>Send Help Request</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Name:</label>
+        <input type="text" name="name" required>
+
+        <label for="request_type">Type of Assistance Needed:</label>
+        <select name="request_type" required>
+            <option value="" disabled selected>Select the type of help</option>
+            <option value="Emergency Shelter">Emergency Shelter</option>
+            <option value="Food and Water">Food and Water</option>
+            <option value="Medical Care">Medical Care</option>
+            <!-- Add other options here -->
+            <option value="Other">Other</option>
+        </select>
+
+        <label for="urgency_level">Urgency Level:</label>
+        <select name="urgency_level" required>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select>
+
+        <label for="people_affected">Number of People Affected:</label>
+        <input type="number" name="people_affected" required>
+
+        <label for="details">Details of the Situation:</label>
+        <textarea name="details" required></textarea>
+
+        <label for="attachments">Attachments:</label>
+        <input type="file" name="attachments">
+
+        <label for="language_preference">Language Preference:</label>
+        <input type="text" name="language_preference">
+
+        <label for="special_needs">Special Needs:</label>
+        <input type="text" name="special_needs">
+
+        <label for="incident_datetime">Date and Time of the Incident:</label>
+        <input type="datetime-local" name="incident_datetime" required>
+
+        <label for="relationship_to_situation">Submitter's Relationship to the Situation:</label>
+        <input type="text" name="relationship_to_situation" required>
+
+        <label for="contact_number">Contact Number:</label>
+        <input type="tel" name="contact_number" required>
+
+        <label for="current_location">Current Location:</label>
+        <input type="text" name="current_location" required>
+
+        <label for="confirmation_checkbox">Confirmation Checkbox:</label>
+        <input type="checkbox" name="confirmation_checkbox" required>
+
+        <button type="submit">Submit Request</button>
+    </form>
+</body>
+</html>
+

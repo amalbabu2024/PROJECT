@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AidLink Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'img/tsunami.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: left;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        header ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
+
+        header li {
+            margin-right: 20px;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        header a:hover {
+            text-decoration: underline;
+        }
+
+        header .logout a {
+            background-color: #dd2222;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        header .logout a:hover {
+            background-color: #ff4444;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            overflow: auto;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>AidLink Admin Dashboard</h1>
+        <ul>
+            <li><a href="/ ">Home</a></li>
+            <li><a href="/admin_view_users">View Users</a></li>
+            <li><a href="/admin_view_civilians">View Civilians</a></li>
+            <li><a href="/admin_view_coordinators">View Coordinators</a></li>
+            <li><a href="/coorreg">Add Coordinators</a></li>
+            <li><a href="/add_camp">Add camp</a></li>
+            <li><a href="/view_camps">View Camps</a></li>
+            <!-- Add more links for your admin actions -->
+        </ul>
+        <div class="logout">
+            <a href="/logout">Logout</a>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        &copy; 2023 AidLink
+    </footer>
+</body>
+</html>

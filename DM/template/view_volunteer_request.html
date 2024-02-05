@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Request Details</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <style>
+        body {
+            background-image: url("{% static 'img/firefighters.jpg' %}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif; /* Set a default font */
+            color: black; /* Set text color to black */
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        table {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            color: black; /* Set text color to black */
+        }
+
+        th {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        a {
+            color: #4caf50;
+            text-decoration: underline;
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        a:hover {
+            color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Volunteer Request Details</h2>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>ID:</th>
+                    <td>{{ volunteer_request.id }}</td>
+                </tr>
+                <tr>
+                    <th>User:</th>
+                    <td>{{ volunteer_request.user.username }}</td>
+                </tr>
+                <tr>
+                    <th>Full Name:</th>
+                    <td>{{ volunteer_request.full_name }}</td>
+                </tr>
+                <tr>
+                    <th>Date of Birth:</th>
+                    <td>{{ volunteer_request.date_of_birth }}</td>
+                </tr>
+                <tr>
+                    <th>Gender:</th>
+                    <td>{{ volunteer_request.gender }}</td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>{{ volunteer_request.address }}</td>
+                </tr>
+                <tr>
+                    <th>Phone Mobile:</th>
+                    <td>{{ volunteer_request.phone_mobile }}</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>{{ volunteer_request.email }}</td>
+                </tr>
+                <tr>
+                    <th>Emergency Contact Name:</th>
+                    <td>{{ volunteer_request.emergency_contact_name }}</td>
+                </tr>
+                <tr>
+                    <th>Emergency Contact Phone:</th>
+                    <td>{{ volunteer_request.emergency_contact_phone }}</td>
+                </tr>
+                <tr>
+                    <th>Relevant Skills (Medical):</th>
+                    <td>{{ volunteer_request.relevant_skills_medical }}</td>
+                </tr>
+                <tr>
+                    <th>Relevant Skills (Technical):</th>
+                    <td>{{ volunteer_request.relevant_skills_technical }}</td>
+                </tr>
+                <tr>
+                    <th>Certifications (First Aid):</th>
+                    <td>{{ volunteer_request.certifications_first_aid }}</td>
+                </tr>
+                <tr>
+                    <th>Previous Experience:</th>
+                    <td>{{ volunteer_request.previous_experience }}</td>
+                </tr>
+                <tr>
+                    <th>Educational Qualifications:</th>
+                    <td>{{ volunteer_request.educational_qualifications }}</td>
+                </tr>
+                <tr>
+                    <th>Blood Group:</th>
+                    <td>{{ volunteer_request.blood_group }}</td>
+                </tr>
+                <tr>
+                    <th>Health Condition:</th>
+                    <td>{{ volunteer_request.health_condition }}</td>
+                </tr>
+                <tr>
+                    <th>Status:</th>
+                    <td>{{ volunteer_request.status }}</td>
+                </tr>
+                <!-- Add more fields as needed -->
+            </tbody>
+        </table>
+        <a href="{% url 'manage_volunteer_requests' %}">Back to Volunteer Requests</a>
+    </div>
+</body>
+</html>

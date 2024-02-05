@@ -66,6 +66,7 @@
     </style>
 </head>
 <body>
+
     <div class="login-container">
         <img src="{% static 'img/main-logo.png' %}" alt="Logo" class="logo">
         <h2>Login</h2>
@@ -81,10 +82,11 @@
             </div>
             <button type="submit" class="btn-primary">Login</button>
         </form>
+        <br>
+        <a href="{% url 'reset_password' %}">Forgot Password</a>
         <div class="signup-link">
-            Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+            Don't have an account? <a href="/civilreg">Sign up here</a>
         </div>
     </div>
 </body>
 </html>
-
