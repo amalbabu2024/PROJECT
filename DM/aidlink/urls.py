@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from .views import send_help_request, view_help_requests, edit_help_request, delete_help_request
 from .views import set_request_status
 from .views import volunteer_request, volunteer_request_success, manage_volunteer_requests,view_volunteer_request,view_civilian_request
-
+from .views import add_team_leader
 
 
 
@@ -54,11 +54,15 @@ urlpatterns = [
     path('update_volunteer_status/<int:request_id>/', views.update_volunteer_status, name='update_volunteer_status'),
     path('view_civilian_request/<int:request_id>/', view_civilian_request, name='view_civilian_request'),
     path('view_civilian_request/', view_civilian_request, name='view_civilian_request'),
-
     
     
-
-
+    
+    
+    
+    path('managerreg/', views.managerreg, name='managerreg'),
+    path('managerdashboard/', views.manager_dashboard, name='manager_dashboard'),
+    path('admin_add_organization/', views.admin_add_organization, name='admin_add_organization'),
+    path('add_team_leader/', add_team_leader, name='add_team_leader'),
 
 
 
@@ -69,6 +73,8 @@ urlpatterns = [
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
  ]
+
+
 
 
 

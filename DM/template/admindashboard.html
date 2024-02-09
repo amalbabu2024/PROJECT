@@ -2,15 +2,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AidLink Admin Dashboard</title>
+    <title>Admin Dashboard</title>
     <style>
         body {
+            background-image: url("{% static 'img/team.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            background-position: center;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url("{% static 'img/tsunami.jpg' %}"); /* Add the path to your image file */
-            background-size: cover; /* Adjust as needed */
-            background-position: center;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -64,7 +64,6 @@
         main {
             flex: 1;
             padding: 20px;
-            background-color: #fff;
             overflow: auto;
         }
 
@@ -87,6 +86,8 @@
             <li><a href="/coorreg">Add Coordinators</a></li>
             <li><a href="/add_camp">Add camp</a></li>
             <li><a href="/view_camps">View Camps</a></li>
+            <li><a href="/admin_add_organization">Add Organization</a></li>
+            <li><a href="/managerreg">Add Manager</a></li>
             <!-- Add more links for your admin actions -->
         </ul>
         <div class="logout">

@@ -1,11 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+class Organization(models.Model):
+    OrganizationID = models.AutoField(primary_key=True)
+    OrganizationName = models.CharField(max_length=100)
+    OrganizationType = models.CharField(max_length=50)
+    ContactInfo = models.CharField(max_length=100)
+    Specialization = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.OrganizationName
+
+
 class User(AbstractUser):
     is_civilian = models.BooleanField(default=False)
     is_coordinator = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-
+    is_manager = models.BooleanField(default=False)
+    is_team_leader = models.BooleanField(default=False)
+    is_team_member = models.BooleanField(default=False)
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, blank=True, related_name='users')
+    
     def __str__(self):
         roles = []
         if self.is_civilian:
@@ -14,6 +29,12 @@ class User(AbstractUser):
             roles.append('Coordinator')
         if self.is_admin:
             roles.append('Admin')
+        if self.is_manager:
+            roles.append('Manager')
+        if self.is_team_leader:
+            roles.append('Team Leader')
+        if self.is_team_member:
+            roles.append('Team Member')
         return f"{self.username} ({', '.join(roles)})"
 
 class Civilian(models.Model):
@@ -184,3 +205,67 @@ class VolunteerRequest(models.Model):
         return f"{self.user.username} - {self.status}"
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+# class Organization(models.Model):
+#     OrganizationID = models.AutoField(primary_key=True)
+#     OrganizationName = models.CharField(max_length=100)
+#     OrganizationType = models.CharField(max_length=50)
+#     ContactInfo = models.CharField(max_length=100)
+#     Specialization = models.CharField(max_length=100)
+
+#     def __str__(self):
+#         return self.OrganizationName
+
+
+class Manager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='manager')
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    contact_email = models.EmailField(max_length=254)
+    contact_phone_number = models.CharField(max_length=15)
+    email = models.EmailField(max_length=254, default='default@email.com')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='managers', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+class TeamLeader(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='team_leader')
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    contact_email = models.EmailField(max_length=254)
+    contact_phone_number = models.CharField(max_length=15)
+    email = models.EmailField(max_length=254, default='default@email.com')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='team_leader', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+class TeamMember(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='team_member')
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    contact_email = models.EmailField(max_length=254)
+    contact_phone_number = models.CharField(max_length=15)
+    email = models.EmailField(max_length=254, default='default@email.com')
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, related_name='team_member', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username

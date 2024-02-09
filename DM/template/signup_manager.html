@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Registration</title>
+    <!-- Add your CSS stylesheets and JavaScript libraries here -->
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            background-image: url("{% static 'img/natural-disaster-concept-with-flood.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.5); /* Adjust the alpha value (0.5) to make it more or less transparent */
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 400px; /* Set max-width for the form container */
+            width: 100%; /* Ensure the form container takes up the full width */
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #007bff;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Manager Registration</h2>
+    {% if messages %}
+        <div>
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    <form action="#" method="post" id="manager-registration-form">
+        {% csrf_token %}
+        <div>
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username-input" placeholder="Create a Username" required>
+            <div id="username-validation-message"></div>
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email-input" placeholder="Enter your Email-Id" required>
+            <div id="email-validation-message"></div>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password-input" placeholder="Create a password" required>
+            <div id="password-validation-message"></div>
+        </div>
+        <div>
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" name="confirm_password" id="confirm-password-input" placeholder="Confirm Password" required>
+            <div id="confirm-password-validation-message"></div>
+        </div>
+        <div>
+            <label for="organization">Organization</label>
+            <select name="organization" id="organization-select">
+                {% if organizations %}
+                    {% for organization in organizations %}
+                        <option value="{{ organization.id }}">{{ organization.OrganizationName }}</option>
+                    {% endfor %}
+                {% else %}
+                    <option value="">No organizations found.</option>
+                {% endif %}
+            </select>
+            
+            </select>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+</body>
+</html>

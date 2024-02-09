@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard</title>
+    <!-- Add Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Add your CSS stylesheets and JavaScript libraries here -->
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            background-image: url("{% static 'img/signup.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            background-position: center;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Set body height to full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background-color: #01d262; /* Updated header background color */
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 20px;
+        }
+        .navbar-container {
+            flex: 1;
+            display: flex;
+            height: 100%;
+        }
+        .navbar {
+            background-color: #01d262; /* Updated navigation bar background color */
+            width: 250px;
+            overflow-x: hidden;
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            transition: width 0.5s ease;
+            height: 100%; /* Set navbar height to full viewport height */
+        }
+        .navbar-brand {
+            display: block;
+            padding: 20px 0;
+            text-align: center;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar-button {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            border-bottom: 1px solid #5a6268;
+        }
+        .navbar-button i {
+            margin-right: 10px;
+        }
+        .navbar-button:hover {
+            background-color: #5a6268;
+        }
+        .logout-button {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            background-color: #dc3545;
+            border: none;
+            cursor: pointer;
+            margin-top: auto;
+        }
+        .logout-button:hover {
+            background-color: #c82333;
+        }
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            padding-top: 60px;
+            height: calc(100vh - 60px); /* Set content height to remaining viewport height */
+            overflow-y: auto; /* Enable scrollbar if content overflows */
+        }
+        .toggle-button {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            background-color: #01d262; /* Updated toggle button background color */
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+        .toggle-button:hover {
+            background-color: #01d262; /* Updated toggle button hover background color */
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        Welcome to the Manager Dashboard...{{ request.user.username }}
+    </div>
+    <div class="navbar-container">
+        <button class="toggle-button" onclick="toggleNavbar()">☰</button>
+        <nav class="navbar" id="navbar">
+            <div class="navbar-brand">Manager Dashboard</div>
+            <a href="/add_team_leader" class="navbar-button"><i class="fas fa-user"></i>Add Team Leader</a>
+            <a href="#" class="navbar-button"><i class="fas fa-users"></i>Add Team Member</a>
+            <a href="#" class="navbar-button"><i class="fas fa-chart-line"></i>View Statistics</a>
+            <a href="#" class="navbar-button"><i class="far fa-calendar-alt"></i>Schedule Meetings</a>
+            <a href="#" class="navbar-button"><i class="fas fa-tasks"></i>Manage Projects</a>
+            <a href="#" class="navbar-button"><i class="fas fa-cog"></i>Settings</a>
+            <a href="#" class="navbar-button"><i class="fas fa-envelope"></i>Messages</a>
+            <a href="#" class="navbar-button"><i class="fas fa-bell"></i>Notifications</a>
+            <a href="#" class="navbar-button"><i class="fas fa-question-circle"></i>Help</a>
+            <a href="#" class="navbar-button"><i class="fas fa-wrench"></i>Tools</a>
+            <a href="#" class="navbar-button"><i class="fas fa-user-cog"></i>User Settings</a>
+            <a href="#" class="navbar-button"><i class="fas fa-file-alt"></i>Reports</a>
+            <!-- Add more buttons for additional functionalities -->
+            <button class="logout-button" onclick="location.href='/logout'">Logout</button>
+        </nav>
+        <div class="content">
+            <!-- Add your dashboard content here -->
+        </div>
+    </div>
+    <script>
+        function toggleNavbar() {
+            var navbar = document.getElementById('navbar');
+            var toggleButton = document.querySelector('.toggle-button');
+            var content = document.querySelector('.content');
+            if (navbar.style.width === '250px') {
+                navbar.style.width = '80px';
+                toggleButton.style.transform = 'translateX(0)';
+                content.style.paddingLeft = '80px';
+            } else {
+                navbar.style.width = '250px';
+                toggleButton.style.transform = 'translateX(200px)';
+                content.style.paddingLeft = '250px';
+            }
+        }
+    </script>
+</body>
+</html>

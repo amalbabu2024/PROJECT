@@ -96,3 +96,32 @@ class VolunteerRequestForm(forms.ModelForm):
     class Meta:
         model = VolunteerRequest
         exclude = ['user', 'status']
+
+
+
+
+
+
+
+
+
+
+
+from django import forms
+from .models import Organization
+
+class OrganizationForm(forms.ModelForm):
+    class Meta:
+        model = Organization
+        fields = '__all__'
+
+
+
+
+from django import forms
+from .models import TeamLeader
+
+class TeamLeaderForm(forms.ModelForm):
+    class Meta:
+        model = TeamLeader
+        fields = ['first_name', 'last_name', 'contact_email', 'contact_phone_number', 'email', 'organization']

@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import get_user_model
 from .models import User, Civilian, Coordinator
+from .models import Manager,Organization
 
 
 
@@ -53,6 +54,34 @@ def cooreg(request):
 
     return render(request,'signup_coordinator.html')
 
+def managerreg(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        organization_id = request.POST.get('organization')  # Retrieve selected organization ID
+
+        if User.objects.filter(username=username).exists():
+            messages.success(request, "Username is already taken.")
+            return render(request, 'signup_manager.html')
+
+        user = User(username=username, email=email, is_manager=True)
+        user.set_password(password)
+        user.save()
+
+        organization = None
+        if organization_id:
+            organization = Organization.objects.get(OrganizationID=organization_id)  # Corrected field name
+
+        manager = Manager(user=user, organization=organization)  # Assign organization to manager
+        manager.save()
+
+        return redirect('/admindashboard')
+
+    organizations = Organization.objects.all()
+    return render(request, 'signup_manager.html', {'organizations': organizations})
+
+
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -67,6 +96,8 @@ def login(request):
                 return redirect('civilhome')  # Redirect to civilian home page
             elif user.is_coordinator:
                 return redirect('coorhome')  # Redirect to coordinator home page
+            elif user.is_manager:
+                return redirect('manager_dashboard')
             else:
                 return redirect('admindashboard')  # Redirect to admin dashboard or any other appropriate admin page
         else:
@@ -83,6 +114,11 @@ def civilian_home(request):
 @login_required(login_url='login')
 def coordinator_home(request):
     return render(request, 'coordinators_dashboard.html')
+
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)
+@login_required(login_url='login')
+def manager_home(request):
+    return render(request, 'manager_dashboard.html')
 
 def logo(request):
     # if request.user.is_authentcated:
@@ -716,3 +752,58 @@ def view_civilian_request(request):
     }
 
     return render(request, 'view_civilian_request.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import render
+
+def manager_dashboard(request):
+    # Add logic here to retrieve data for the manager dashboard if needed
+    return render(request, 'manager_dashboard.html')
+
+
+from django.shortcuts import render, redirect
+from .forms import OrganizationForm
+
+def admin_add_organization(request):
+    if request.method == 'POST':
+        form = OrganizationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('managerreg')  # Redirect to the same page after successful form submission
+    else:
+        form = OrganizationForm()
+    return render(request, 'admin_add_organization.html', {'form': form})
+
+
+
+from django.shortcuts import render, redirect
+from .forms import TeamLeaderForm
+
+def add_team_leader(request):
+    if request.method == 'POST':
+        form = TeamLeaderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('add_team_leader')  # Redirect to the team leader list page after successful submission
+    else:
+        form = TeamLeaderForm()
+    return render(request, 'add_team_leader.html', {'form': form})
+
+
+
+  
