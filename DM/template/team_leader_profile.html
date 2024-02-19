@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Leader Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .text-center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Team Leader Profile</h1>
+        <table>
+            <tr>
+                <th>User Name:</th>
+                <td>{{ team_leader.user.username }}</td>
+            </tr>
+            <tr>
+                <th>First Name:</th>
+                <td>{{ team_leader.first_name }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>{{ team_leader.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Contact Email:</th>
+                <td>{{ team_leader.contact_email }}</td>
+            </tr>
+            <tr>
+                <th>Contact Phone Number:</th>
+                <td>{{ team_leader.contact_phone_number }}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{ team_leader.email }}</td>
+            </tr>
+            <tr>
+                <th>Organization:</th>
+                <td>{{ team_leader.organization }}</td>
+            </tr>
+        </table>
+        <div class="text-center">
+            <a href="{% url 'edit_team_leader_profile' %}" class="button">Edit Profile</a>
+        </div>
+    </div>
+</body>
+</html>

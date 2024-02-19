@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
@@ -5,12 +6,33 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import get_user_model
 from .models import User, Civilian, Coordinator
-from .models import Manager,Organization
-
-
+from .models import Manager,Organization,TeamLeader,TeamMember
 
 def index(request):
     return render(request,'index.html')
+
+def admindashboard(request):
+    if not request.user.is_superuser:
+        return redirect('home')  # Redirect non-admin users
+
+    User = get_user_model()
+    users = User.objects.all()
+    civilians = Civilian.objects.all()
+    coordinators = Coordinator.objects.all()
+    managers = Manager.objects.all()
+    team_leaders = TeamLeader.objects.all()
+    team_members = TeamMember.objects.all()
+    
+    context = {
+        'users': users,
+        'civilians': civilians,
+        'coordinators': coordinators,
+        'managers': managers,
+        'team_leaders': team_leaders,
+        'team_members': team_members,
+    }
+    return render(request, 'admindashboard.html', context)
+
 
 def civreg(request):
     if request.method == 'POST':
@@ -54,6 +76,7 @@ def cooreg(request):
 
     return render(request,'signup_coordinator.html')
 
+@login_required(login_url='login')
 def managerreg(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -81,6 +104,60 @@ def managerreg(request):
     organizations = Organization.objects.all()
     return render(request, 'signup_manager.html', {'organizations': organizations})
 
+def team_leader_registration(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        organization_id = request.POST.get('organization')
+
+        if User.objects.filter(username=username).exists():
+            messages.success(request, "Username is already taken.")
+            return render(request, 'signup_team_leader.html')
+
+        user = User(username=username, email=email, is_team_leader=True)
+        user.set_password(password)
+        user.save()
+
+        organization = None
+        if organization_id:
+            organization = Organization.objects.get(OrganizationID=organization_id)
+
+        team_leader = TeamLeader(user=user, organization=organization)
+        team_leader.save()
+
+        return redirect('/managerdashboard')  # Redirect to appropriate dashboard
+
+    organizations = Organization.objects.all()
+    return render(request, 'signup_team_leader.html', {'organizations': organizations})
+
+def team_member_registration(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        email = request.POST['email']
+        password = request.POST['password']
+        organization_id = request.POST.get('organization')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username is already taken.")
+            return redirect('team_member_registration')
+
+        user = User(username=username, email=email, is_team_member=True)
+        user.set_password(password)
+        user.save()
+
+        organization = None
+        if organization_id:
+            organization = Organization.objects.get(OrganizationID=organization_id)
+
+        team_member = TeamMember(user=user, organization=organization)
+        team_member.save()
+
+        return redirect('/teamleaderdashboard')  # Redirect to appropriate dashboard
+
+    organizations = Organization.objects.all()
+    return render(request, 'signup_team_member.html', {'organizations': organizations})
+
 
 def login(request):
     if request.method == 'POST':
@@ -92,18 +169,29 @@ def login(request):
         if user is not None:
             auth_login(request, user)
             
-            if user.is_civilian:
+            if user.is_admin:
+                return redirect('admindashboard')
+            elif user.is_civilian:
                 return redirect('civilhome')  # Redirect to civilian home page
             elif user.is_coordinator:
                 return redirect('coorhome')  # Redirect to coordinator home page
             elif user.is_manager:
                 return redirect('manager_dashboard')
+            elif user.is_team_leader:
+                return redirect('team_leader_dashboard')
+            elif user.is_team_member:
+                return redirect('team_member_dashboard')
             else:
-                return redirect('admindashboard')  # Redirect to admin dashboard or any other appropriate admin page
+                return redirect('log')  
         else:
             messages.error(request, "Username or Password is Incorrect.")
     
     return render(request, 'login.html')
+
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)
+@login_required(login_url='login')
+def admin_home(request):
+    return render(request, 'admindashboard.html')
 
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)
 @login_required(login_url='login')
@@ -120,6 +208,17 @@ def coordinator_home(request):
 def manager_home(request):
     return render(request, 'manager_dashboard.html')
 
+
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)
+@login_required(login_url='login')
+def team_leader_home(request):
+    return render(request, 'team_leader_dashboard.html')
+
+@cache_control(no_cache=True,must_revalidate=True,no_store=True)
+@login_required(login_url='login')
+def team_member_home(request):
+    return render(request, 'team_member_dashboard.html')
+
 def logo(request):
     # if request.user.is_authentcated:
     logout(request)
@@ -127,40 +226,7 @@ def logo(request):
 
 
 
-def admindashboard(request):
-    # You can add logic here to fetch data or perform other admin-related tasks
-    return render(request, 'admindashboard.html')
 
-def admindashboard(request):
-    if not request.user.is_superuser:
-        return redirect('home')  # Redirect non-admin users
-
-    users = User.objects.all()  # Query all users
-    return render(request, 'admindashboard.html', {'users': users})
-
-def admindashboard(request):
-    civilians = Civilian.objects.all()
-    return render(request, 'admindashboard.html', {'civilians': civilians})
-
-
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import get_user_model
-from .models import Civilian, Coordinator
-
-def admindashboard(request):
-    User = get_user_model()
-    users = User.objects.all()
-    civilians = Civilian.objects.all()
-    coordinators = Coordinator.objects.all()
-    
-    context = {
-        'users': users,
-        'civilians': civilians,
-        'coordinators': coordinators,
-    }
-    return render(request, 'admindashboard.html', context)
 
 from django.shortcuts import render
 from .models import User
@@ -260,7 +326,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 
 @login_required
 def change_password(request):
@@ -769,16 +835,11 @@ def view_civilian_request(request):
 
 
 
-from django.shortcuts import render
-
-def manager_dashboard(request):
-    # Add logic here to retrieve data for the manager dashboard if needed
-    return render(request, 'manager_dashboard.html')
-
 
 from django.shortcuts import render, redirect
 from .forms import OrganizationForm
 
+@login_required(login_url='login')
 def admin_add_organization(request):
     if request.method == 'POST':
         form = OrganizationForm(request.POST)
@@ -789,21 +850,76 @@ def admin_add_organization(request):
         form = OrganizationForm()
     return render(request, 'admin_add_organization.html', {'form': form})
 
+@login_required
+def manager_profile(request):
+    manager = Manager.objects.get(user=request.user.manager)
+    context = {'manager': manager}
+    return render(request, 'manager_profile.html', context)
 
 
 from django.shortcuts import render, redirect
-from .forms import TeamLeaderForm
+from .models import Manager
 
-def add_team_leader(request):
+@login_required
+def edit_manager_profile(request):
+    manager = Manager.objects.get(user=request.user)
+
     if request.method == 'POST':
-        form = TeamLeaderForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('add_team_leader')  # Redirect to the team leader list page after successful submission
-    else:
-        form = TeamLeaderForm()
-    return render(request, 'add_team_leader.html', {'form': form})
+        manager.first_name = request.POST.get('first_name')
+        manager.last_name = request.POST.get('last_name')
+        manager.contact_email = request.POST.get('contact_email')
+        manager.contact_phone_number = request.POST.get('contact_phone_number')
+        manager.save()
+        return redirect('manager_profile')  # Redirect to the manager profile page after saving the changes
+
+    return render(request, 'edit_manager_profile.html', {'manager': manager})
 
 
 
-  
+from django.shortcuts import render, redirect
+from .models import TeamLeader
+
+@login_required
+def team_leader_profile(request):
+    team_leader = TeamLeader.objects.get(user=request.user)
+    return render(request, 'team_leader_profile.html', {'team_leader': team_leader})
+
+@login_required
+def edit_team_leader_profile(request):
+    team_leader = TeamLeader.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        team_leader.first_name = request.POST.get('first_name')
+        team_leader.last_name = request.POST.get('last_name')
+        team_leader.contact_email = request.POST.get('contact_email')
+        team_leader.contact_phone_number = request.POST.get('contact_phone_number')
+        team_leader.save()
+        return redirect('team_leader_profile')  # Redirect to the team leader profile page after saving the changes
+
+    return render(request, 'edit_team_leader_profile.html', {'team_leader': team_leader})
+
+
+from django.shortcuts import render, redirect
+from .models import TeamMember
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='login')
+def team_member_profile(request):
+    team_member = TeamMember.objects.get(user=request.user)
+    return render(request, 'team_member_profile.html', {'team_member': team_member})
+
+@login_required(login_url='login')
+def edit_team_member_profile(request):
+    team_member = TeamMember.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        team_member.first_name = request.POST.get('first_name')
+        team_member.last_name = request.POST.get('last_name')
+        team_member.contact_email = request.POST.get('contact_email')
+        team_member.contact_phone_number = request.POST.get('contact_phone_number')
+        team_member.save()
+        return redirect('team_member_profile')  # Redirect to the team member profile page after saving the changes
+
+    return render(request, 'edit_team_member_profile.html', {'team_member': team_member})
+
+

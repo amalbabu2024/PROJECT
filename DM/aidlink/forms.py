@@ -116,12 +116,10 @@ class OrganizationForm(forms.ModelForm):
         fields = '__all__'
 
 
-
-
 from django import forms
-from .models import TeamLeader
+from .models import Manager
 
-class TeamLeaderForm(forms.ModelForm):
+class ManagerForm(forms.ModelForm):
     class Meta:
-        model = TeamLeader
-        fields = ['first_name', 'last_name', 'contact_email', 'contact_phone_number', 'email', 'organization']
+        model = Manager
+        fields = '__all__'

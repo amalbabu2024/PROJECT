@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Member Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Team Member Profile</h1>
+        <table>
+            <tr>
+                <th>User Name:</th>
+                <td>{{ team_member.user.username }}</td>
+            </tr>
+            <tr>
+                <th>First Name:</th>
+                <td>{{ team_member.first_name }}</td>
+            </tr>
+            <tr>
+                <th>Last Name:</th>
+                <td>{{ team_member.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Contact Email:</th>
+                <td>{{ team_member.contact_email }}</td>
+            </tr>
+            <tr>
+                <th>Contact Phone Number:</th>
+                <td>{{ team_member.contact_phone_number }}</td>
+            </tr>
+            <!-- Add more fields as needed -->
+        </table>
+        <div class="text-center">
+            <a href="{% url 'edit_team_member_profile' %}" class="button">Edit Profile</a>
+        </div>
+    </div>
+</body>
+</html>

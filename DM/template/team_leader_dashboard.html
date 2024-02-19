@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager Dashboard</title>
+    <title>Team Leader Dashboard</title>
     <!-- Add Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <!-- Add your CSS stylesheets and JavaScript libraries here -->
     <style>
         /* Add your custom CSS styles here */
         body {
-            background-image: url("{% static 'img/signup.jpg' %}"); /* Add the path to your image file */
+            background-image: url("{% static 'img/landscape-extreme-typhoon-damages.jpg' %}"); /* Add the path to your image file */
             background-size: cover; /* Adjust as needed */
             background-position: center;
             font-family: Arial, sans-serif;
@@ -113,22 +113,21 @@
 </head>
 <body>
     <div class="header">
-        Welcome to the Manager Dashboard...{{ request.user.username }}
+        Welcome to the Team Leader Dashboard...{{ request.user.username }}
     </div>
     <div class="navbar-container">
         <button class="toggle-button" onclick="toggleNavbar()">☰</button>
         <nav class="navbar" id="navbar">
-            <div class="navbar-brand">Manager Dashboard</div>
-            <a href="/manager_profile" class="navbar-button"><i class="fas fa-user"></i>Profile</a>
-            <a href="/edit_manager_profile" class="navbar-button"><i class="fas fa-edit"></i>Edit Profile</a>
-            <a href="/team_leader_registration" class="navbar-button"><i class="fas fa-user"></i>Add Team Leader</a>
-            <a href="#" class="navbar-button"><i class="fas fa-users"></i>Add Team Member</a>
+            <div class="navbar-brand">Team Leader Dashboard</div>
+            <a href="/team_leader_profile" class="navbar-button"><i class="fas fa-user"></i>Profile</a>
+            <a href="/edit_team_leader_profile" class="navbar-button"><i class="fas fa-edit"></i>Edit Profile</a>
+            <a href="/team_member_registration" class="navbar-button"><i class="fas fa-user"></i>Add Team Member</a>
             <a href="#" class="navbar-button"><i class="fas fa-chart-line"></i>View Statistics</a>
             <a href="#" class="navbar-button"><i class="far fa-calendar-alt"></i>Schedule Meetings</a>
             <a href="#" class="navbar-button"><i class="fas fa-tasks"></i>Manage Projects</a>
             <a href="#" class="navbar-button"><i class="fas fa-cog"></i>Settings</a>
             <a href="#" class="navbar-button"><i class="fas fa-envelope"></i>Messages</a>
-            <a href="#" class="navbar-button"><i class="fas fa-file-alt"></i>Reports</a>
+            <a href="#" class="navbar-button"><i class="fas fa-bell"></i>Notifications</a>
             <!-- Add more buttons for additional functionalities -->
             <button class="logout-button" onclick="location.href='/logout'">Logout</button>
         </nav>

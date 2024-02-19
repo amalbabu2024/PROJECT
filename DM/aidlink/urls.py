@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from .views import send_help_request, view_help_requests, edit_help_request, delete_help_request
 from .views import set_request_status
 from .views import volunteer_request, volunteer_request_success, manage_volunteer_requests,view_volunteer_request,view_civilian_request
-from .views import add_team_leader
+
 
 
 
@@ -19,7 +19,7 @@ urlpatterns = [
     path('coorhome/',views.coordinator_home,name='coorhome'),
     path('logout/',views.logo,name='logout'),
     path('accounts/login/',views.login,name='login'),
-    path('admindashboard/', views.admindashboard, name='admindashboard'),
+    path('admindashboard/', views.admin_home, name='admindashboard'),
     path('admin_view_users/', views.admin_view_users, name='admin_view_users'),
     path('admin_view_civilians/', views.admin_view_civilians, name='admin_view_civilians'),
     path('admin_view_coordinators/', views.admin_view_coordinators, name='admin_view_coordinators'),
@@ -60,9 +60,18 @@ urlpatterns = [
     
     
     path('managerreg/', views.managerreg, name='managerreg'),
-    path('managerdashboard/', views.manager_dashboard, name='manager_dashboard'),
+    path('managerdashboard/', views.manager_home, name='manager_dashboard'),
     path('admin_add_organization/', views.admin_add_organization, name='admin_add_organization'),
-    path('add_team_leader/', add_team_leader, name='add_team_leader'),
+    path('team_leader_registration/', views.team_leader_registration, name='team_leader_registration'),
+    path('teamleaderdashboard/', views.team_leader_home, name='team_leader_dashboard'),
+    path('team_member_registration/', views.team_member_registration, name='team_member_registration'),
+    path('teammemberdashboard/', views.team_member_home, name='team_member_dashboard'),
+    path('manager_profile/', views.manager_profile, name='manager_profile'),
+    path('edit_manager_profile/', views.edit_manager_profile, name='edit_manager_profile'),
+    path('team_leader_profile/', views.team_leader_profile, name='team_leader_profile'),
+    path('edit_team_leader_profile/', views.edit_team_leader_profile, name='edit_team_leader_profile'),
+    path('team_member_profile/', views.team_member_profile, name='team_member_profile'),
+    path('edit_team_member_profile/', views.edit_team_member_profile, name='edit_team_member_profile'),
 
 
 
