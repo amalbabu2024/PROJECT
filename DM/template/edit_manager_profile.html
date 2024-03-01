@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Manager Profile</title>
     <style>
+        .main-logo {
+            margin: 29px 0;
+        }
+        
+        .main-logo>img {
+            display: inline-block;
+        }
+        
+        .main-logo>h2 {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 11px;
+            color: #01d262;
+        }        
         body {
+            background-image: url("{% static 'img/edit profile1.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            background-position: center;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
@@ -14,7 +33,7 @@
         .profile {
             padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.5); /* Adjust the alpha (4th value) to control transparency */
             margin: 20px;
             max-width: 600px;
@@ -36,7 +55,7 @@
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 20px;
             box-sizing: border-box; /* Include padding and border in the width */
         }
         .profile form input[type="checkbox"] {
@@ -47,7 +66,7 @@
             color: white;
             padding: 12px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 20px;
             cursor: pointer;
             width: 100%; /* Full width for submit button */
             margin-top: 10px;
@@ -58,6 +77,12 @@
     </style>
 </head>
 <body>
+    <a href="{% url "home" %}">
+        <div class="main-logo">
+            <img src="{% static "img/main-logo.png" %}" alt="">
+            <h2>AIDLINK</h2>
+        </div>
+    </a>
     <div class="profile">
         <h1>Edit Manager Profile</h1>
         <form method="post">

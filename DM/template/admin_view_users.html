@@ -56,8 +56,15 @@
           <td>
             {% if user.is_civilian %}<span class="role">Civilian</span>{% endif %}
             {% if user.is_coordinator %}{% if user.is_civilian %}, {% endif %}<span class="role">Coordinator</span>{% endif %}
+            {% if user.is_manager %}{% if user.is_civilian or user.is_coordinator %}, {% endif %}<span class="role">Manager</span>{% endif %}
+            {% if user.is_team_leader %}{% if user.is_civilian or user.is_coordinator or user.is_manager %}, {% endif %}<span class="role">Team Leader</span>{% endif %}
+            {% if user.is_team_member %}{% if user.is_civilian or user.is_coordinator or user.is_manager or user.is_team_leader %}, {% endif %}<span class="role">Team Member</span>{% endif %}
+          </td>          
+          {% comment %} <td>
+            {% if user.is_civilian %}<span class="role">Civilian</span>{% endif %}
+            {% if user.is_coordinator %}{% if user.is_civilian %}, {% endif %}<span class="role">Coordinator</span>{% endif %}
             {% if user.is_admin %}{% if user.is_civilian or user.is_coordinator %}, {% endif %}<span class="role">Admin</span>{% endif %}
-          </td>
+          </td> {% endcomment %}
         </tr>
       {% endfor %}
     </tbody>
@@ -71,32 +78,3 @@
 
 
 
-
-
-{% comment %} {% extends "admindashboard.html" %}
-
-{% block content %}
-  <h2>Users List</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Username</th>
-        <th>Roles</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-        <tr>
-          <td>{{ user.email }}</td>
-          <td>{{ user.username }}</td>
-          <td>
-            {% if user.is_civilian %}Civilian{% endif %}
-            {% if user.is_coordinator %}{% if user.is_civilian %}, {% endif %}Coordinator{% endif %}
-            {% if user.is_admin %}{% if user.is_civilian or user.is_coordinator %}, {% endif %}Admin{% endif %}
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-{% endblock %} {% endcomment %}

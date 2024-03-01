@@ -72,8 +72,21 @@ urlpatterns = [
     path('edit_team_leader_profile/', views.edit_team_leader_profile, name='edit_team_leader_profile'),
     path('team_member_profile/', views.team_member_profile, name='team_member_profile'),
     path('edit_team_member_profile/', views.edit_team_member_profile, name='edit_team_member_profile'),
+    path('add_organization_resources/', views.add_organization_resources, name='add_organization_resources'),
+    path('view_organization_resources/', views.view_organization_resources, name='view_organization_resources'),
+    path('manager/assign-task/<int:user_id>/', views.manager_assign_task, name='manager_assign_task'),
+    path('manager/task-list/', views.manager_task_list, name='manager_task_list'),
+    path('team-leader/assign-task/<int:user_id>/', views.team_leader_assign_task, name='team_leader_assign_task'),
+    path('team_leader_task_list/<int:user_id>/', views.team_leader_task_list, name='team_leader_task_list'),
+    path('team-member/task-list/', views.team_member_task_list, name='team_member_task_list'),
+    path('task/<int:task_id>/update-status/', views.update_task_status, name='update_task_status'),
+    
+    
 
 
+    
+    
+    
 
     
     

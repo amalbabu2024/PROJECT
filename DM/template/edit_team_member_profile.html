@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Team Member Profile</title>
     <style>
+        .main-logo {
+            margin: 29px 0;
+        }
+        
+        .main-logo>img {
+            display: inline-block;
+        }
+        
+        .main-logo>h2 {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 11px;
+            color: #01d262;
+        }
         body {
+            background-image: url("{% static 'img/edit profile3.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            background-position: center;
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
@@ -16,9 +35,8 @@
             max-width: 800px;
             margin: 50px auto;
             padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
         }
         h1 {
             text-align: center;
@@ -38,14 +56,14 @@
             padding: 10px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
-            border-radius: 4px;
+            border-radius: 20px;
             box-sizing: border-box;
         }
         input[type="submit"] {
             background-color: #007bff;
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 20px;
             cursor: pointer;
         }
         input[type="submit"]:hover {
@@ -54,6 +72,12 @@
     </style>
 </head>
 <body>
+    <a href="{% url "home" %}">
+        <div class="main-logo">
+            <img src="{% static "img/main-logo.png" %}" alt="">
+            <h2>AIDLINK</h2>
+        </div>
+    </a>
     <div class="container">
         <h1>Edit Team Member Profile</h1>
         <form method="post">

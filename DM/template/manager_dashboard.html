@@ -121,14 +121,11 @@
             <div class="navbar-brand">Manager Dashboard</div>
             <a href="/manager_profile" class="navbar-button"><i class="fas fa-user"></i>Profile</a>
             <a href="/edit_manager_profile" class="navbar-button"><i class="fas fa-edit"></i>Edit Profile</a>
+            <a href="{% url 'change_password' %}" class="navbar-button"><i class="fas fa-password"></i>Change Password</a>
             <a href="/team_leader_registration" class="navbar-button"><i class="fas fa-user"></i>Add Team Leader</a>
-            <a href="#" class="navbar-button"><i class="fas fa-users"></i>Add Team Member</a>
-            <a href="#" class="navbar-button"><i class="fas fa-chart-line"></i>View Statistics</a>
-            <a href="#" class="navbar-button"><i class="far fa-calendar-alt"></i>Schedule Meetings</a>
-            <a href="#" class="navbar-button"><i class="fas fa-tasks"></i>Manage Projects</a>
-            <a href="#" class="navbar-button"><i class="fas fa-cog"></i>Settings</a>
-            <a href="#" class="navbar-button"><i class="fas fa-envelope"></i>Messages</a>
-            <a href="#" class="navbar-button"><i class="fas fa-file-alt"></i>Reports</a>
+            <a href="{% url 'manager_assign_task' user.id %}" class="navbar-button"><i class="fas fa-file-alt"></i> Manager Assign Task</a>
+            <a href="/manager/task-list" class="navbar-button"><i class="fas fa-file-alt"></i> Manager Task List</a>
+
             <!-- Add more buttons for additional functionalities -->
             <button class="logout-button" onclick="location.href='/logout'">Logout</button>
         </nav>

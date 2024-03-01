@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Resources</title>
+    <style>
+        .download-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-image: url("{% static 'img/organizaion resouces management.jpg' %}");
+            background-size: cover;
+            background-position: center;
+        }
+        /* Remaining CSS styles for the table and its content */
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        .empty-row {
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>Organization Resources</h1>
+    <table id="resource-table">
+        <thead>
+            <tr>
+                <th>Resource Name</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Resource Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for resource in organization_resources %}
+            <tr>
+                <td>{{ resource.ResourceName }}</td>
+                <td>{{ resource.Description }}</td>
+                <td>{{ resource.Quantity }}</td>
+                <td>{{ resource.ResourceType }}</td>
+            </tr>
+            {% empty %}
+            <tr class="empty-row">
+                <td colspan="4">No resources found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const downloadBtn = document.getElementById("download-btn");
+            const resourceTable = document.getElementById("resource-table");
+
+            downloadBtn.addEventListener("click", function() {
+                const csvContent = generateCSV(resourceTable);
+                downloadCSV(csvContent);
+            });
+
+            function generateCSV(table) {
+                let csvContent = "data:text/csv;charset=utf-8,";
+                const rows = table.querySelectorAll("tr");
+                rows.forEach(function(row) {
+                    const cols = row.querySelectorAll("td, th");
+                    const rowValues = Array.from(cols).map(function(col) {
+                        return col.textContent.replace(",", "");
+                    });
+                    csvContent += rowValues.join(",") + "\n";
+                });
+                return encodeURI(csvContent);
+            }
+
+            function downloadCSV(csvContent) {
+                const link = document.createElement("a");
+                link.setAttribute("href", csvContent);
+                link.setAttribute("download", "organization_resources.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    </script>
+
+    <a href="#" id="download-btn" class="download-btn">Download CSV</a>
+</body>
+</html>

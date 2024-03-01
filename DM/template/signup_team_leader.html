@@ -130,6 +130,89 @@
         <button type="submit">Register</button>
     </form>
 </div>
+<script>
+    const usernameInput = document.getElementById("username-input");
+    const emailInput = document.getElementById("email-input");
+    const passwordInput = document.getElementById("password-input");
+    const confirmPasswordInput = document.getElementById("confirm-password-input");
+    const organizationSelect = document.getElementById("organization-select");
+    const form = document.getElementById("team-leader-registration-form");
+
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    form.addEventListener("input", () => {
+        let valid = true;
+
+        // Username validation
+        if (!usernameInput.value.trim()) {
+            valid = false;
+            document.getElementById("username-validation-message").textContent = "Username is required.";
+        } else if (!/^[a-zA-Z0-9]+$/.test(usernameInput.value)) {
+            valid = false;
+            document.getElementById("username-validation-message").textContent = "Username must contain only letters and numbers.";
+        } else {
+            document.getElementById("username-validation-message").textContent = "";
+        }
+
+        // Email validation
+        if (!emailInput.value.trim()) {
+            valid = false;
+            document.getElementById("email-validation-message").textContent = "Email is required.";
+        } else if (!emailRegex.test(emailInput.value)) {
+            valid = false;
+            document.getElementById("email-validation-message").textContent = "Invalid email format.";
+        } else {
+            const atIndex = emailInput.value.indexOf('@');
+            const lastAtIndex = emailInput.value.lastIndexOf('@');
+            if (atIndex !== lastAtIndex) {
+                valid = false;
+                document.getElementById("email-validation-message").textContent = "Email should contain only one '@' character.";
+            } else if (emailInput.value !== emailInput.value.toLowerCase()) {
+                valid = false;
+                document.getElementById("email-validation-message").textContent = "Email must be in lowercase.";
+            } else {
+                document.getElementById("email-validation-message").textContent = "";
+            }
+        }
+
+         // Password validation
+         if (!passwordInput.value.trim()) {
+            valid = false;
+            document.getElementById("password-validation-message").textContent = "Password is required.";
+        } else if (passwordInput.value.length < 8) {
+            valid = false;
+            document.getElementById("password-validation-message").textContent = "Password must be at least 8 characters long.";
+        } else if (!/[A-Z]/.test(passwordInput.value)) {
+            valid = false;
+            document.getElementById("password-validation-message").textContent = "Password must contain at least one uppercase letter.";
+        } else if (!/[a-z]/.test(passwordInput.value)) {
+            valid = false;
+            document.getElementById("password-validation-message").textContent = "Password must contain at least one lowercase letter.";
+        } else if (!/[0-9]/.test(passwordInput.value)) {
+            valid = false;
+            document.getElementById("password-validation-message").textContent = "Password must contain at least one number.";
+        } else if (!/[^A-Za-z0-9]/.test(passwordInput.value)) {
+            valid = false;
+            document.getElementById("password-validation-message").textContent = "Password must contain at least one special character.";
+        } else {
+            document.getElementById("password-validation-message").textContent = "";
+        }
+
+        // Confirm password validation
+        if (confirmPasswordInput.value !== passwordInput.value) {
+            valid = false;
+            document.getElementById("confirm-password-validation-message").textContent = "Passwords do not match.";
+        } else {
+            document.getElementById("confirm-password-validation-message").textContent = "";
+        }
+        // Organization validation (unchanged)
+
+        // Enable or disable the submit button based on validation result
+        const submitButton = document.querySelector('button[type="submit"]');
+        submitButton.disabled = !valid;
+    });
+</script>
 
 </body>
 </html>

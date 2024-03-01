@@ -1,0 +1,114 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    <title>Assign Task</title>
+</head>
+<body>
+    <h1>Assign Task</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <label for="assigned_to">Assign To:</label>
+        <select name="assigned_to" id="id_assigned_to">
+            {% for team_member in team_members %}
+            <option value="{{ team_member.user_id }}">{{ team_member.user.username }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Assign Task</button>
+    </form>
+</body>
+</html> {% endcomment %}
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Assign Task</title>
+    <style>
+        body {
+            background-image: url("{% static 'img/task3.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center horizontally */
+            justify-content: center; /* Center vertically */
+            height: 100vh;
+        }
+        
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-top: 20px; /* Add margin-top to separate from h1 */
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 0; /* Add this line to remove default margin */
+            margin-bottom: 20px; /* Add margin bottom for spacing */
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        
+        select,
+        textarea,
+        button,
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-sizing: border-box;
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Assign Task</h1>
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <label for="assigned_to">Assign To:</label>
+            <select name="assigned_to" id="id_assigned_to">
+                {% for team_member in team_members %}
+                <option value="{{ team_member.user_id }}">{{ team_member.user.username }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Assign Task</button>
+        </form>
+    </div>
+</body>
+</html>

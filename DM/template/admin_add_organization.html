@@ -7,6 +7,21 @@
     <title>Add Organization</title>
     <!-- Add your CSS stylesheets here -->
     <style>
+        .main-logo {
+            margin: 29px 0;
+        }
+        
+        .main-logo>img {
+            display: inline-block;
+        }
+        
+        .main-logo>h2 {
+            display: inline-block;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 11px;
+            color: #01d262;
+        }
         body {
             background-image: url("{% static 'img/natural-disaster-concept-with-flood.jpg' %}");
             background-size: cover;
@@ -72,6 +87,12 @@
     </style>
 </head>
 <body>
+    <a href="{% url "home" %}">
+        <div class="main-logo">
+            <img src="{% static "img/main-logo.png" %}" alt="">
+            <h2>AIDLINK</h2>
+        </div>
+    </a>
 
 <div class="container">
     <h2>Add Organization</h2>
@@ -81,6 +102,96 @@
         <button type="submit">Save</button>
     </form>
 </div>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Helper functions for validation
+        function containsOnlyLetters(text) {
+            return /^[A-Za-z\s]+$/.test(text);
+        }
+    
+        function containsNoSpecialCharsExceptAt(text) {
+            return /^[A-Za-z0-9@.\s]+$/.test(text);
+        }
+    
+        function validateField(field, validationFunction, errorMessage) {
+            if (!field.value.trim()) {
+                return "This field is required.";
+            } else if (!validationFunction(field.value)) {
+                return errorMessage;
+            }
+            return "";
+        }
+    
+        // Validation logic for each field
+        function validateOrgName() {
+            errorElements[orgName.id].textContent = validateField(orgName, containsOnlyLetters, "Organization name should not contain numbers or special characters.");
+            updateSaveButtonState();
+        }
+    
+        function validateOrgType() {
+            errorElements[orgType.id].textContent = validateField(orgType, containsOnlyLetters, "Organization type should not contain numbers or special characters.");
+            updateSaveButtonState();
+        }
+    
+        function validateContactInfo() {
+            errorElements[contactInfo.id].textContent = validateField(contactInfo, containsNoSpecialCharsExceptAt, "Contact info should not contain special characters except @.");
+            updateSaveButtonState();
+        }
+    
+        function validateSpecialization() {
+            errorElements[specialization.id].textContent = validateField(specialization, containsOnlyLetters, "Specialization should not contain numbers or special characters.");
+            updateSaveButtonState();
+        }
+    
+        // Select fields and error display elements
+        const orgName = document.getElementById("id_OrganizationName");
+        const orgType = document.getElementById("id_OrganizationType");
+        const contactInfo = document.getElementById("id_ContactInfo");
+        const specialization = document.getElementById("id_Specialization");
+        const form = document.querySelector("form");
+        const saveButton = document.querySelector("button[type='submit']");
+    
+        // Dynamically create error elements
+        let errorElements = {};
+        [orgName, orgType, contactInfo, specialization].forEach(field => {
+            const errorElement = document.createElement("div");
+            errorElement.style.color = "red";
+            field.parentNode.insertBefore(errorElement, field.nextSibling);
+            errorElements[field.id] = errorElement;
+    
+            // Attach event listeners for real-time validation
+            field.addEventListener("input", function() {
+                switch(field.id) {
+                    case "id_OrganizationName":
+                        validateOrgName();
+                        break;
+                    case "id_OrganizationType":
+                        validateOrgType();
+                        break;
+                    case "id_ContactInfo":
+                        validateContactInfo();
+                        break;
+                    case "id_Specialization":
+                        validateSpecialization();
+                        break;
+                }
+            });
+        });
+    
+        // Function to update save button state based on validation status
+        function updateSaveButtonState() {
+            if (Object.values(errorElements).every(errorElement => errorElement.textContent === "")) {
+                saveButton.removeAttribute("disabled");
+            } else {
+                saveButton.setAttribute("disabled", "disabled");
+            }
+        }
+    
+        // Initial state of the save button
+        updateSaveButtonState();
+    });
+    </script>
+    
 </body>
 </html>
+

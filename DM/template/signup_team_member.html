@@ -130,6 +130,141 @@
         <button type="submit">Register</button>
     </form>
 </div>
+{% comment %} <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("team-member-registration-form");
+        const usernameInput = document.getElementById("username-input");
+        const emailInput = document.getElementById("email-input");
+        const passwordInput = document.getElementById("password-input");
+        const confirmPasswordInput = document.getElementById("confirm-password-input");
+
+        form.addEventListener("input", function () {
+            validateUsername();
+            validateEmail();
+            validatePassword();
+            validateConfirmPassword();
+            toggleSubmitButton();
+        });
+
+        function validateUsername() {
+            // Validate username (no special characters)
+            const username = usernameInput.value.trim();
+            const regex = /^[a-zA-Z0-9_]{1,}$/; // Allow letters, numbers, and underscores
+            if (!regex.test(username)) {
+                document.getElementById("username-validation-message").textContent = "Username should not contain special characters.";
+            } else {
+                document.getElementById("username-validation-message").textContent = "";
+            }
+        }
+
+        function validateEmail() {
+            // Validate email (only one @ symbol, no special characters except @)
+            const email = emailInput.value.trim();
+            const atSymbolIndex = email.indexOf("@");
+            const hasSpecialCharacters = /[^a-zA-Z0-9@._-]/.test(email); // Allow letters, numbers, @, dot, underscore, hyphen
+            if (atSymbolIndex === -1 || atSymbolIndex !== email.lastIndexOf("@") || hasSpecialCharacters) {
+                document.getElementById("email-validation-message").textContent = "Invalid email format.";
+            } else {
+                document.getElementById("email-validation-message").textContent = "";
+            }
+        }
+
+        function validatePassword() {
+            // Validate password (minimum 8 characters, at least one uppercase, one lowercase, one special character, one number)
+            const password = passwordInput.value;
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!regex.test(password)) {
+                document.getElementById("password-validation-message").textContent = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+            } else {
+                document.getElementById("password-validation-message").textContent = "";
+            }
+        }
+
+        function validateConfirmPassword() {
+            // Validate confirm password (must match password)
+            const confirmPassword = confirmPasswordInput.value;
+            const password = passwordInput.value;
+            if (confirmPassword !== password) {
+                document.getElementById("confirm-password-validation-message").textContent = "Passwords do not match.";
+            } else {
+                document.getElementById("confirm-password-validation-message").textContent = "";
+            }
+        }
+
+        function toggleSubmitButton() {
+            const submitButton = document.querySelector("button[type=submit]");
+            if (validateUsername() && validateEmail() && validatePassword() && validateConfirmPassword()) {
+                submitButton.removeAttribute("disabled");
+            } else {
+                submitButton.setAttribute("disabled", "disabled");
+            }
+        }
+    });
+</script> {% endcomment %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('team-member-registration-form');
+        const usernameInput = document.getElementById('username-input');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const confirmPasswordInput = document.getElementById('confirm-password-input');
+        const organizationSelect = document.getElementById('organization-select');
+        const submitButton = document.querySelector('button[type="submit"]');
+
+        form.addEventListener('input', () => {
+            const isUsernameValid = validateUsername();
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+            const isOrganizationValid = validateOrganization();
+
+            submitButton.disabled = !(isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isOrganizationValid);
+        });
+
+        function validateUsername() {
+            const value = usernameInput.value.trim();
+            const isValid = /^[a-zA-Z0-9_]{5,}$/.test(value);
+            return updateValidationMessage(usernameInput, isValid, 'Username must be at least 5 characters long and can only contain letters, numbers, and underscores.');
+        }
+
+        function validateEmail() {
+            const value = emailInput.value.trim();
+            const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            return updateValidationMessage(emailInput, isValid, 'Invalid email format.');
+        }
+
+        function validatePassword() {
+            const value = passwordInput.value.trim();
+            const isValid = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value);
+            return updateValidationMessage(passwordInput, isValid, 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.');
+        }
+
+        function validateConfirmPassword() {
+            const passwordValue = passwordInput.value.trim();
+            const confirmPasswordValue = confirmPasswordInput.value.trim();
+            const isValid = passwordValue === confirmPasswordValue;
+            return updateValidationMessage(confirmPasswordInput, isValid, 'Passwords do not match.');
+        }
+
+        function validateOrganization() {
+            const isValid = organizationSelect.value !== '';
+            return updateValidationMessage(organizationSelect, isValid, 'Please select an organization.');
+        }
+
+        function updateValidationMessage(element, isValid, message) {
+            const validationMessageElement = element.nextElementSibling;
+            if (!isValid) {
+                element.classList.add('invalid');
+                validationMessageElement.textContent = message;
+                return false;
+            } else {
+                element.classList.remove('invalid');
+                validationMessageElement.textContent = '';
+                return true;
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

@@ -80,7 +80,6 @@
     </style>
 </head>
 <body>
-
 <div class="form-container">
     <h2>Manager Registration</h2>
     {% if messages %}
@@ -131,6 +130,107 @@
         <button type="submit">Register</button>
     </form>
 </div>
+<script>
+    // Real-time form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('manager-registration-form');
+        const usernameInput = document.getElementById('username-input');
+        const emailInput = document.getElementById('email-input');
+        const passwordInput = document.getElementById('password-input');
+        const confirmPasswordInput = document.getElementById('confirm-password-input');
+        const organizationSelect = document.getElementById('organization-select');
+        const usernameMessage = document.getElementById('username-validation-message');
+        const emailMessage = document.getElementById('email-validation-message');
+        const passwordMessage = document.getElementById('password-validation-message');
+        const confirmPasswordMessage = document.getElementById('confirm-password-validation-message');
+        const organizationMessage = document.getElementById('organization-validation-message');
+
+        form.addEventListener('input', function(event) {
+            switch (event.target.id) {
+                case 'username-input':
+                    validateUsername();
+                    break;
+                case 'email-input':
+                    validateEmail();
+                    break;
+                case 'password-input':
+                    validatePassword();
+                    break;
+                case 'confirm-password-input':
+                    validateConfirmPassword();
+                    break;
+            }
+        });
+
+        function validateUsername() {
+            const usernameValue = usernameInput.value.trim();
+            const validUsername = /^[a-zA-Z0-9]+$/.test(usernameValue);
+
+            if (usernameValue === '') {
+                usernameMessage.textContent = 'Username is required.';
+            } else if (!validUsername) {
+                usernameMessage.textContent = 'Username should not contain special characters.';
+            } else {
+                usernameMessage.textContent = '';
+            }
+        }
+
+        function validateEmail() {
+            const emailValue = emailInput.value.trim();
+            const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+            const atCount = (emailValue.match(/@/g) || []).length;
+
+            if (emailValue === '') {
+                emailMessage.textContent = 'Email is required.';
+            } else if (!validEmail) {
+                emailMessage.textContent = 'Invalid email format.';
+            } else if (atCount !== 1) {
+                emailMessage.textContent = 'Email should have exactly one "@" symbol.';
+            } else {
+                emailMessage.textContent = '';
+            }
+        }
+
+        function validatePassword() {
+            const passwordValue = passwordInput.value.trim();
+            const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(passwordValue);
+
+            if (passwordValue === '') {
+                passwordMessage.textContent = 'Password is required.';
+            } else if (!validPassword) {
+                passwordMessage.textContent = 'Password must have at least 8 characters, including one uppercase letter, one lowercase letter, one number, and one special character.';
+            } else {
+                passwordMessage.textContent = '';
+            }
+        }
+
+        function validateConfirmPassword() {
+            const confirmPasswordValue = confirmPasswordInput.value.trim();
+            const passwordValue = passwordInput.value.trim();
+
+            if (confirmPasswordValue === '') {
+                confirmPasswordMessage.textContent = 'Confirm Password is required.';
+            } else if (confirmPasswordValue !== passwordValue) {
+                confirmPasswordMessage.textContent = 'Passwords do not match.';
+            } else {
+                confirmPasswordMessage.textContent = '';
+            }
+        }
+
+        form.addEventListener('submit', function(event) {
+            if (usernameMessage.textContent !== '' ||
+                emailMessage.textContent !== '' ||
+                passwordMessage.textContent !== '' ||
+                confirmPasswordMessage.textContent !== '' ||
+                organizationSelect.value === '') {
+                event.preventDefault(); // Prevent form submission if there are validation errors
+                organizationMessage.textContent = 'Organization is required.';
+            } else {
+                organizationMessage.textContent = '';
+            }
+        });
+    });
+</script>
 
 </body>
 </html>
