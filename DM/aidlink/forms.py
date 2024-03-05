@@ -147,3 +147,10 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['task_name', 'description', 'deadline']
 
+from django import forms
+from .models import Feedback
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['user_type', 'feedback_text', 'user_identifier', 'disclose_user_type']

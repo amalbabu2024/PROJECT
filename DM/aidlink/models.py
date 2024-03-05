@@ -303,3 +303,26 @@ class Task(models.Model):
 
     def __str__(self):
         return self.task_name
+    
+    
+from django.db import models
+
+class Feedback(models.Model):
+    USER_TYPES = [
+        ('civilian', 'Civilian'),
+        ('coordinator', 'Coordinator'),
+        ('manager', 'Manager'),
+        ('team_leader', 'Team Leader'),
+        ('team_member', 'Team Member'),
+        ('unregistered', 'Not a Registered User'),
+        ('no_disclosure', 'Not Interested in Disclosing User Type'),
+    ]
+
+    user_type = models.CharField(max_length=20, choices=USER_TYPES)
+    feedback_text = models.TextField()
+    user_identifier = models.CharField(max_length=100, blank=True, null=True)
+    disclose_user_type = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Feedback - {self.user_type}"

@@ -835,6 +835,12 @@ def view_civilian_request(request):
 
 
 
+from django.shortcuts import render
+from .models import Organization
+
+def organization_list(request):
+    organizations = Organization.objects.all()
+    return render(request, 'organization_list.html', {'organizations': organizations})
 
 
 
@@ -932,6 +938,7 @@ from .models import Organization_Resources
 from .forms import OrganizationResourcesForm
 from .models import Organization, User, Coordinator, Manager, TeamLeader, TeamMember
 
+@login_required(login_url='login')
 def add_organization_resources(request):
     if request.method == 'POST':
         form = OrganizationResourcesForm(request.POST)
@@ -967,6 +974,7 @@ def add_organization_resources(request):
 from django.shortcuts import render
 from .models import Organization_Resources
 
+@login_required(login_url='login')
 def view_organization_resources(request):
     user_organization_id = request.user.team_leader.organization.OrganizationID
     organization_resources = Organization_Resources.objects.filter(OrganizationID=user_organization_id)
@@ -976,12 +984,15 @@ def view_organization_resources(request):
     return render(request, 'organization_resources.html', context)
 
 
+
 from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.conf import settings
 from .models import Task
 from .forms import TaskForm
-
 from .models import TeamLeader, TeamMember
 
+@login_required(login_url='login')
 def manager_assign_task(request, user_id):
     team_leaders = TeamLeader.objects.filter(manager_id=user_id)
     if request.method == 'POST':
@@ -993,6 +1004,17 @@ def manager_assign_task(request, user_id):
             assigned_to_id = request.POST.get('assigned_to')
             task.assigned_to_id = assigned_to_id
             task.save()
+
+            # Send email notification to the assigned user
+            assigned_to_id = User.objects.get(pk=assigned_to_id)
+            send_mail(
+                'Task Assigned',
+                f'You have been assigned a new task : {task.task_name}  Description : { task.description }  Deadline : { task.deadline }  Assigned By : { task.assigned_by }',
+                settings.EMAIL_HOST_USER,
+                [assigned_to_id.email],
+                fail_silently=False,
+            )
+
             return redirect('manager_task_list')
     else:
         form = TaskForm()
@@ -1000,6 +1022,7 @@ def manager_assign_task(request, user_id):
 
 
 
+@login_required(login_url='login')
 def manager_task_list(request):
     tasks = Task.objects.filter(assigned_by=request.user)
     return render(request, 'manager_task_list.html', {'tasks': tasks})
@@ -1010,6 +1033,7 @@ from .forms import TaskForm
 
 from .models import TeamLeader
 
+@login_required(login_url='login')
 def team_leader_assign_task(request, user_id):
     team_members = TeamMember.objects.filter(team_leader_id=user_id)
     if request.method == 'POST':
@@ -1021,26 +1045,109 @@ def team_leader_assign_task(request, user_id):
             assigned_to_id = request.POST.get('assigned_to')
             task.assigned_to_id = assigned_to_id
             task.save()
+            # Send email notification to the assigned user
+            assigned_to_id = User.objects.get(pk=assigned_to_id)
+            send_mail(
+                'Task Assigned',
+                f'You have been assigned a new task : {task.task_name}  Description : { task.description }  Deadline : { task.deadline }  Assigned By : { task.assigned_by }',
+                settings.EMAIL_HOST_USER,
+                [assigned_to_id.email],
+                fail_silently=False,
+            )
             return redirect('team_leader_dashboard')
     else:
         form = TaskForm()
     return render(request, 'team_leader_assign_task.html', {'form': form, 'team_members': team_members})
 
+@login_required(login_url='login')
 def team_leader_task_list(request, user_id):
     tasks_assigned_by_team_leader = Task.objects.filter(assigned_by=user_id)
     tasks_assigned_to_team_leader = Task.objects.filter(assigned_to=user_id)
     return render(request, 'team_leader_task_list.html', {'tasks_assigned_by_team_leader': tasks_assigned_by_team_leader, 'tasks_assigned_to_team_leader': tasks_assigned_to_team_leader})
 
 
+@login_required(login_url='login')
 def team_member_task_list(request):
     tasks_assigned_to_team_member = Task.objects.filter(assigned_to=request.user)
     return render(request, 'team_member_task_list.html', {'tasks_assigned_to_team_member': tasks_assigned_to_team_member})
 
 
-def update_task_status(request, task_id):
-    task = Task.objects.get(pk=task_id)
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from .models import Task
+
+def team_member_update_task_status(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
     if request.method == 'POST':
-        task.status = request.POST.get('status')
+        new_status = request.POST.get('status')
+        task.status = new_status
         task.save()
-        return redirect('team_member_task_list')
-    return render(request, 'update_task_status.html', {'task': task})
+        
+    # Send email
+        email_body = (
+            f'The status of task "{task.task_name}" has been updated to "{task.status}".\n\n'
+            f'Updated by: {request.user.username}\n'
+            f'Updated at: {task.updated_at}\n'
+            )    
+        send_mail(
+            'Task Status Updated',
+            email_body,
+            settings.EMAIL_HOST_USER,
+            [task.assigned_to.email],
+            fail_silently=False,
+        )
+
+    return HttpResponseRedirect('/team-member/task-list/')  
+
+
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from .models import Task
+
+def team_leader_update_task_status(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        task.status = new_status
+        task.save()
+        
+    # Send email
+        email_body = (
+            f'The status of task "{task.task_name}" has been updated to "{task.status}".\n\n'
+            f'Updated by: {request.user.username}\n'
+            f'Updated at: {task.updated_at}\n'
+            )    
+        send_mail(
+            'Task Status Updated',
+            email_body,
+            settings.EMAIL_HOST_USER,
+            [task.assigned_to.email],
+            fail_silently=False,
+        )
+
+    return HttpResponseRedirect('/teamleaderdashboard/')
+
+
+
+
+from django.shortcuts import render, redirect
+from .forms import FeedbackForm
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            if not feedback.disclose_user_type:
+                feedback.user_identifier = None
+            feedback.save()
+            return redirect('feedback_thank_you')
+    else:
+        form = FeedbackForm()
+    
+    return render(request, 'feedback_form.html', {'form': form})
+
+def feedback_thank_you_view(request):
+    return render(request, 'feedback_thank_you.html')

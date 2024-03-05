@@ -23,8 +23,8 @@
             flex-direction: column;
         }
         .header {
-            background-color: #01d262; /* Updated header background color */
-            color: #fff;
+            background-color: rgba(255, 255, 255, .5); /* Updated header background color */
+            color: black;
             padding: 10px 20px;
             text-align: center;
             font-size: 20px;
@@ -35,7 +35,7 @@
             height: 100%;
         }
         .navbar {
-            background-color: #01d262; /* Updated navigation bar background color */
+            background-color: rgba(255, 255, 255, .3); /* Updated navigation bar background color */
             width: 250px;
             overflow-x: hidden;
             padding: 20px 0;
@@ -67,7 +67,7 @@
             margin-right: 10px;
         }
         .navbar-button:hover {
-            background-color: #5a6268;
+            background-color: #01d262;
         }
         .logout-button {
             display: block;
@@ -96,8 +96,8 @@
             position: absolute;
             top: 20px;
             left: 0;
-            background-color: #01d262; /* Updated toggle button background color */
-            color: #fff;
+            background-color: rgba(255, 255, 255, .3); /* Updated toggle button background color */
+            color: black;
             border: none;
             padding: 10px;
             font-size: 20px;
@@ -112,13 +112,13 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    {% comment %} <div class="header">
         Welcome to the Team Member Dashboard...{{ request.user.username }}
-    </div>
+    </div> {% endcomment %}
     <div class="navbar-container">
         <button class="toggle-button" onclick="toggleNavbar()">☰</button>
         <nav class="navbar" id="navbar">
-            <div class="navbar-brand">Team Member Dashboard</div>
+            <div class="navbar-brand">Team Member Dashboard<br>Welcome {{ request.user.username }}</div>
             <a href="/team_member_profile" class="navbar-button"><i class="fas fa-user"></i>Profile</a>
             <a href="/edit_team_member_profile" class="navbar-button"><i class="fas fa-edit"></i>Edit Profile</a>
             <a href="{% url 'change_password' %}" class="navbar-button"><i class="fas fa-password"></i>Change Password</a>
@@ -126,6 +126,10 @@
             <a href="#" class="navbar-button"><i class="fas fa-cog"></i>Settings</a>
             <a href="#" class="navbar-button"><i class="fas fa-envelope"></i>Messages</a>
             <a href="#" class="navbar-button"><i class="fas fa-bell"></i>Notifications</a>
+            {% for task in tasks %}
+            <a href="{% url 'update_task_status' user_id=user.id task_id=task.id %}" class="navbar-button"><i class="fas fa-cog"></i>Manage task</a>
+            {% endfor %}
+
             <!-- Add more buttons for additional functionalities -->
             <button class="logout-button" onclick="location.href='/logout'">Logout</button>
         </nav>

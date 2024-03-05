@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from .views import send_help_request, view_help_requests, edit_help_request, delete_help_request
 from .views import set_request_status
 from .views import volunteer_request, volunteer_request_success, manage_volunteer_requests,view_volunteer_request,view_civilian_request
-
+from .views import feedback_view, feedback_thank_you_view
 
 
 
@@ -58,7 +58,7 @@ urlpatterns = [
     
     
     
-    
+    path('organizations/', views.organization_list, name='organization_list'),
     path('managerreg/', views.managerreg, name='managerreg'),
     path('managerdashboard/', views.manager_home, name='manager_dashboard'),
     path('admin_add_organization/', views.admin_add_organization, name='admin_add_organization'),
@@ -79,10 +79,11 @@ urlpatterns = [
     path('team-leader/assign-task/<int:user_id>/', views.team_leader_assign_task, name='team_leader_assign_task'),
     path('team_leader_task_list/<int:user_id>/', views.team_leader_task_list, name='team_leader_task_list'),
     path('team-member/task-list/', views.team_member_task_list, name='team_member_task_list'),
-    path('task/<int:task_id>/update-status/', views.update_task_status, name='update_task_status'),
+    path('team_member_update_task_status/<int:task_id>/', views.team_member_update_task_status, name='team_member_update_task_status'),
+    path('team_leader_update_task_status/<int:task_id>/', views.team_leader_update_task_status, name='team_leader_update_task_status'),
+    path('feedback/', feedback_view, name='feedback_form'),
+    path('feedback/thank-you/', feedback_thank_you_view, name='feedback_thank_you'),
     
-    
-
 
     
     

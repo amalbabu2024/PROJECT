@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 50px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+        }
+        p {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .user-type {
+            display: none;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Feedback Form</h1>
+        <p>Welcome to the feedback form. Help us to overcome our limitations by providing your experiences.</p>
+        <form method="post">
+            {% csrf_token %}
+            <select id="userTypeSelect">
+                <option value="">Select User Type</option>
+                <option value="civilian">Civilian</option>
+                <option value="coordinator">Coordinator</option>
+                <option value="manager">Manager</option>
+                <option value="team_leader">Team Leader</option>
+                <option value="team_member">Team Member</option>
+                <option value="unregistered">Not a Registered User</option>
+                <option value="no_disclosure">Not Interested in Disclosing User Type</option>
+            </select>
+            <div class="user-type" id="civilianQuestions">
+                <textarea name="civilian_question1" placeholder="What was your experience during the disaster?"></textarea>
+                <textarea name="civilian_question2" placeholder="What challenges did you face during the disaster?"></textarea>
+                <textarea name="civilian_question3" placeholder="How did you receive information during the disaster?"></textarea>
+                <textarea name="civilian_question4" placeholder="Did you receive adequate support during the disaster?"></textarea>
+                <textarea name="civilian_question5" placeholder="How can we improve our communication during disasters?"></textarea>
+                <textarea name="civilian_question6" placeholder="What resources were lacking during the disaster?"></textarea>
+                <textarea name="civilian_question7" placeholder="How can communities better prepare for disasters?"></textarea>
+                <textarea name="civilian_question8" placeholder="What suggestions do you have for disaster relief efforts?"></textarea>
+                <textarea name="civilian_question9" placeholder="How did you help others during the disaster?"></textarea>
+                <textarea name="civilian_question10" placeholder="How can we improve our disaster response efforts?"></textarea>
+            </div>
+            <div class="user-type" id="coordinatorQuestions">
+                <textarea name="coordinator_question1" placeholder="What challenges did you face in coordinating relief efforts?"></textarea>
+                <textarea name="coordinator_question2" placeholder="How did you prioritize tasks for your team?"></textarea>
+                <textarea name="coordinator_question3" placeholder="What resources were lacking during the coordination efforts?"></textarea>
+                <textarea name="coordinator_question4" placeholder="How can we improve communication between coordinators and other team members?"></textarea>
+                <textarea name="coordinator_question5" placeholder="What strategies did you use to ensure effective coordination?"></textarea>
+                <textarea name="coordinator_question6" placeholder="How did you manage conflicting priorities during the coordination efforts?"></textarea>
+                <textarea name="coordinator_question7" placeholder="What feedback do you have for improving coordination in future disasters?"></textarea>
+                <textarea name="coordinator_question8" placeholder="How did you collaborate with other coordinators or organizations during the disaster?"></textarea>
+                <textarea name="coordinator_question9" placeholder="What training or resources would have helped you better coordinate relief efforts?"></textarea>
+                <textarea name="coordinator_question10" placeholder="How can we support coordinators like you better in future disaster situations?"></textarea>
+            </div>
+            
+            <div class="user-type" id="managerQuestions">
+                <textarea name="manager_question1" placeholder="What resources were lacking during the disaster?"></textarea>
+                <textarea name="manager_question2" placeholder="How did you allocate resources to different teams or areas?"></textarea>
+                <textarea name="manager_question3" placeholder="What challenges did you face in managing resources?"></textarea>
+                <textarea name="manager_question4" placeholder="How did you prioritize tasks for your team?"></textarea>
+                <textarea name="manager_question5" placeholder="What strategies did you use to ensure effective resource management?"></textarea>
+                <textarea name="manager_question6" placeholder="How did you coordinate with other managers or coordinators?"></textarea>
+                <textarea name="manager_question7" placeholder="What feedback do you have for improving resource management in future disasters?"></textarea>
+                <textarea name="manager_question8" placeholder="How did you ensure the safety of your team members during the disaster?"></textarea>
+                <textarea name="manager_question9" placeholder="What training or resources would have helped you better manage resources?"></textarea>
+                <textarea name="manager_question10" placeholder="How can we support managers like you better in future disaster situations?"></textarea>
+            </div>
+
+            <div class="user-type" id="team_leaderQuestions">
+                <textarea name="team_leader_question1" placeholder="How did you prioritize tasks for your team?"></textarea>
+                <textarea name="team_leader_question2" placeholder="What challenges did you face in leading your team?"></textarea>
+                <textarea name="team_leader_question3" placeholder="How did you communicate tasks and expectations to your team members?"></textarea>
+                <textarea name="team_leader_question4" placeholder="How did you motivate your team members during the disaster?"></textarea>
+                <textarea name="team_leader_question5" placeholder="What strategies did you use to ensure effective teamwork?"></textarea>
+                <textarea name="team_leader_question6" placeholder="How did you handle conflicts or disagreements within your team?"></textarea>
+                <textarea name="team_leader_question7" placeholder="What feedback do you have for improving team leadership in future disasters?"></textarea>
+                <textarea name="team_leader_question8" placeholder="How did you ensure the safety and well-being of your team members?"></textarea>
+                <textarea name="team_leader_question9" placeholder="What training or resources would have helped you better lead your team?"></textarea>
+                <textarea name="team_leader_question10" placeholder="How can we support team leaders like you better in future disaster situations?"></textarea>
+            </div>
+            
+            <div class="user-type" id="team_memberQuestions">
+                <textarea name="team_member_question1" placeholder="How did you contribute to the relief efforts?"></textarea>
+                <textarea name="team_member_question2" placeholder="What challenges did you face as a team member?"></textarea>
+                <textarea name="team_member_question3" placeholder="How did you collaborate with other team members?"></textarea>
+                <textarea name="team_member_question4" placeholder="How did you communicate with your team leader?"></textarea>
+                <textarea name="team_member_question5" placeholder="What skills or resources did you bring to the team?"></textarea>
+                <textarea name="team_member_question6" placeholder="How did you adapt to changing circumstances during the disaster?"></textarea>
+                <textarea name="team_member_question7" placeholder="What feedback do you have for improving team dynamics in future disasters?"></textarea>
+                <textarea name="team_member_question8" placeholder="How did you ensure your own safety and well-being during the disaster?"></textarea>
+                <textarea name="team_member_question9" placeholder="What training or resources would have helped you better contribute to the team?"></textarea>
+                <textarea name="team_member_question10" placeholder="How can we support team members like you better in future disaster situations?"></textarea>
+            </div>
+
+            <div class="user-type" id="unregisteredQuestions">
+                <textarea name="unregistered_question1" placeholder="What prompted you to provide feedback even though you are not a registered user?"></textarea>
+                <textarea name="unregistered_question2" placeholder="How did you hear about our disaster management website?"></textarea>
+                <textarea name="unregistered_question3" placeholder="What features or information were you looking for on our website?"></textarea>
+                <textarea name="unregistered_question4" placeholder="How easy was it to navigate our website and find the information you needed?"></textarea>
+                <textarea name="unregistered_question5" placeholder="What suggestions do you have for improving our website and services?"></textarea>
+                <textarea name="unregistered_question6" placeholder="Did you find the information on our website helpful and informative?"></textarea>
+                <textarea name="unregistered_question7" placeholder="Would you consider registering on our website in the future?"></textarea>
+                <textarea name="unregistered_question8" placeholder="How likely are you to recommend our website to others?"></textarea>
+                <textarea name="unregistered_question9" placeholder="Is there anything else you would like to share about your experience with our website?"></textarea>
+                <textarea name="unregistered_question10" placeholder="How can we improve our website to better meet your needs?"></textarea>
+            </div>
+
+            <div class="user-type" id="no_disclosureQuestions">
+                <textarea name="no_disclosure_question1" placeholder="What prompted you to provide feedback without disclosing your user type?"></textarea>
+                <textarea name="no_disclosure_question2" placeholder="How did you find the overall experience on our website?"></textarea>
+                <textarea name="no_disclosure_question3" placeholder="Were you able to find the information you were looking for on our website?"></textarea>
+                <textarea name="no_disclosure_question4" placeholder="What features or information did you find most useful on our website?"></textarea>
+                <textarea name="no_disclosure_question5" placeholder="What aspects of our website could be improved?"></textarea>
+                <textarea name="no_disclosure_question6" placeholder="Did you encounter any difficulties while using our website?"></textarea>
+                <textarea name="no_disclosure_question7" placeholder="How likely are you to visit our website again in the future?"></textarea>
+                <textarea name="no_disclosure_question8" placeholder="Would you recommend our website to others?"></textarea>
+                <textarea name="no_disclosure_question9" placeholder="Is there anything else you would like to share about your experience with our website?"></textarea>
+                <textarea name="no_disclosure_question10" placeholder="How can we improve our website to better meet your needs?"></textarea>
+            </div>
+            <button type="submit">Submit Feedback</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('userTypeSelect').addEventListener('change', function() {
+            var userType = this.value;
+            document.querySelectorAll('.user-type').forEach(function(el) {
+                el.style.display = 'none';
+            });
+            document.getElementById(userType + 'Questions').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

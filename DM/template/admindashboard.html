@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -85,9 +85,9 @@
             <li><a href="/admin_view_coordinators">View Coordinators</a></li>
             <li><a href="/coorreg">Add Coordinators</a></li>
             <li><a href="/add_camp">Add camp</a></li>
-            <li><a href="/view_camps">View Camps</a></li>
             <li><a href="/admin_add_organization">Add Organization</a></li>
             <li><a href="/managerreg">Add Manager</a></li>
+            <li><a href="/admin-alert-system">Alert System</a></li>
             <!-- Add more links for your admin actions -->
         </ul>
         <div class="logout">
@@ -100,5 +100,229 @@
     <footer>
         &copy; 2023 AidLink
     </footer>
+</body>
+</html> {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static 'img/team.jpg' %}"); /* Add your background image URL */
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        #sidebar {
+            background-color: rgba(255, 255, 255, .1);
+            color: #fff;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+            transition: 0.3s;
+            padding-top: 20px; /* Adjust top padding */
+            z-index: 100; /* Ensure sidebar is below header and footer */
+        }
+
+        #sidebar.active {
+            width: 80px;
+        }
+
+        #content {
+            margin-left: 231px;
+            margin-top: 80px;
+            margin-bottom: 40px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+            width: calc(100% - 250px);
+            transition: width 0.3s;
+            z-index: 99; /* Ensure content is below header but above sidebar */
+        }
+
+        #content.active {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, .1);
+            color: #fff;
+            text-align: left;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        header h1 {
+            color: black;
+            margin: 0;
+            font-family: "Courier New", Courier, monospace;
+            margin-right: 800px;
+             /* Adjust left margin */
+        }
+
+        header .toggle-btn {
+            background-color: transparent;
+            border: none;
+            color: black;
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 20px; /* Add margin for spacing */
+        }
+
+        footer {
+            background-color: rgba(255, 255, 255, .1);
+            font-family: "Courier New", Courier, monospace;
+            color: black; /* Change text color */
+            text-align: center;
+            padding: 10px;
+            width: calc(100% - 250px);
+            position: fixed;
+            bottom: 0;
+            z-index: 1000; /* Ensure footer is above sidebar and content */
+        }
+        
+
+        /* Sidebar links */
+        #sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #sidebar ul li {
+            padding: 10px;
+            margin-bottom: 5px;
+        }
+
+        #sidebar ul li a {
+            color: black;
+            text-decoration: none;
+            font-family: "Courier New", Courier, monospace;
+            display: block;
+            padding: 10px; /* Adjust padding */
+            border-radius: 5px; /* Add border radius */
+        }
+
+        #sidebar ul li a:hover {
+            background-color: #4CAF50; /* Change background color on hover to blue */
+        }
+
+        /* Toggle button animation */
+        @keyframes toggle {
+            0% {
+                transform: rotate(0);
+            }
+            100% {
+                transform: rotate(180deg);
+            }
+        }
+
+        #sidebar.active + .toggle-btn {
+            animation: toggle 0.3s forwards;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar.active {
+                width: 250px;
+            }
+
+            #content.active {
+                margin-left: 250px;
+            }
+
+            header .toggle-btn {
+                display: block;
+            }
+
+            header h1 {
+                margin-left: 0;
+            }
+        }
+        #sidebar .logout-btn {
+            color: black;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        #sidebar .logout-btn:hover {
+            background-color: red;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <ul>
+            <li><a href="/admindashboard">Home</a></li>
+            <li><a href="/admin_view_users">View Users</a></li>
+            <li><a href="/admin_view_civilians">View Civilians</a></li>
+            <li><a href="/admin_view_coordinators">View Coordinators</a></li>
+            <li><a href="/coorreg">Add Coordinators</a></li>
+            <li><a href="/add_camp">Add Camp</a></li>
+            <li><a href="/admin_add_organization">Add Organization</a></li>
+            <li><a href="/managerreg">Add Manager</a></li>
+            <li><a href="/admin-alert-system">Alert System</a></li>
+            <li><a href="/logout" class="logout-btn">Logout</a></li>
+            <!-- Add more links for your admin actions -->
+        </ul>
+    </div>
+    <div id="content">
+        <header>
+            <button class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <h1>AidLink Admin Dashboard</h1>
+        </header>
+        <main>
+            {% block content %}
+                <h2>Welcome to the Admin Dashboard</h2>
+                <p>This is some sample content that you can replace with actual content for your different pages.</p>
+            {% endblock %}
+        </main>
+        <footer>
+            &copy; 2024 AidLink
+        </footer>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            sidebar.classList.toggle('active');
+            content.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>

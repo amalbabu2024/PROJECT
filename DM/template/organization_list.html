@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url({% static 'img/partners.jpg' %});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #01d262;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #01d262;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #01d262;
+        }        
+
+        @media screen and (max-width: 600px) {
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Organization List</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Organization Name</th>
+                        <th>Organization Type</th>
+                        <th>Contact Info</th>
+                        <th>Specialization</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for organization in organizations %}
+                    <tr>
+                        <td>{{ organization.OrganizationName }}</td>
+                        <td>{{ organization.OrganizationType }}</td>
+                        <td>{{ organization.ContactInfo }}</td>
+                        <td>{{ organization.Specialization }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
