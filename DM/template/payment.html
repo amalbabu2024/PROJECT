@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+    <link rel="stylesheet" href="path_to_your_css_file.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        /* Advanced CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url({% static 'img/partners.jpg' %});
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #f37254;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #d95b35;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Gateway</h1>
+        <p>Thank you for your donation. Your support is greatly appreciated!</p>
+        <button onclick="window.location.href='/';">Return to Home Page</button>
+    </div>
+
+    <script>
+        var options = {
+            key: '{{ razorpay_api_key }}',
+            amount: '{{ amount }}',
+            currency: '{{ currency }}',
+            name: '{{ name }}',
+            description: 'Disaster Relief Donation',
+            image: 'img/main-logo.png',
+            prefill: {
+                name: '{{ name }}',
+                email: '{{ email }}',
+                contact: '{{ phone }}'
+            },
+            theme: {
+                color: '#F37254'
+            },
+            handler: function(response) {
+                console.log(response);
+                alert('Payment successful. Payment ID: ' + response.razorpay_payment_id);
+                // Perform further actions here, like updating your database
+            }
+        };
+
+        var rzp = new Razorpay(options);
+
+        rzp.on('payment.failed', function (response){
+            console.log(response.error.code);
+            console.log(response.error.description);
+            console.log(response.error.source);
+            console.log(response.error.step);
+            console.log(response.error.reason);
+            console.log(response.error.metadata.order_id);
+            console.log(response.error.metadata.payment_id);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            rzp.open();
+        });
+    </script>
+</body>
+</html>

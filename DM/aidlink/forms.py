@@ -154,3 +154,18 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['user_type', 'feedback_text', 'user_identifier', 'disclose_user_type']
+
+
+
+
+
+
+
+
+from django import forms
+
+class DonationForm(forms.Form):
+    amount = forms.DecimalField(label='Amount', min_value=1)
+    name = forms.CharField(label='Name', max_length=100)
+    email = forms.EmailField(label='Email')
+    phone = forms.CharField(label='Phone', max_length=15)

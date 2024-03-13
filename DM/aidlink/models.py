@@ -326,3 +326,25 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"Feedback - {self.user_type}"
+
+
+
+
+
+
+from django.db import models
+from django.conf import settings
+from datetime import datetime
+
+class Donation(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    name = models.CharField(max_length=100, default='Anonymous')
+    email = models.EmailField(default='')
+    phone = models.CharField(max_length=15, default='')
+    razorpay_order_id = models.CharField(max_length=100, default='')
+    razorpay_payment_id = models.CharField(max_length=100, default='')
+    razorpay_signature = models.CharField(max_length=100, default='')
+    created_at = models.DateTimeField(default=datetime.now)
+
+    def __str__(self):
+        return f"Donation {self.pk} by {self.name}"

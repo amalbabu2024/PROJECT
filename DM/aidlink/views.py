@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.contrib.auth import get_user_model
-from .models import User, Civilian, Coordinator
+from .models import Donation, User, Civilian, Coordinator
 from .models import Manager,Organization,TeamLeader,TeamMember
 
 def index(request):
@@ -329,7 +329,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 
 @login_required
 def change_password(request):
@@ -1151,3 +1151,80 @@ def feedback_view(request):
 
 def feedback_thank_you_view(request):
     return render(request, 'feedback_thank_you.html')
+
+
+
+
+
+
+
+from django.shortcuts import render, redirect
+from django.conf import settings
+from .forms import DonationForm
+from .models import Donation
+import razorpay
+
+razorpay_api_key = settings.RAZORPAY_API_KEY
+razorpay_secret_key = settings.RAZORPAY_API_SECRET
+razorpay_client = razorpay.Client(auth=(razorpay_api_key, razorpay_secret_key))
+
+def donate(request):
+    if request.method == 'POST':
+        form = DonationForm(request.POST)
+        if form.is_valid():
+            amount = form.cleaned_data['amount']
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            phone = form.cleaned_data['phone']
+
+            # Create a Razorpay order
+            order_data = {
+                'amount': int(amount * 100),  # amount in paisa
+                'currency': 'INR',
+                'receipt': f'order_rcptid_{name}_{phone}',  # Use a unique receipt ID
+                'payment_capture': '1'  # Auto-capture payment
+            }
+
+            # Create an order
+            order = razorpay_client.order.create(data=order_data)
+
+            # Save the donation details to the database
+            donation = Donation.objects.create(
+                amount=amount,
+                name=name,
+                email=email,
+                phone=phone,
+                razorpay_order_id=order['id']
+            )
+
+            return redirect(f'/payment/{donation.id}/')  # Redirect to payment page with donation ID
+    else:
+        form = DonationForm()
+
+    return render(request, 'donate.html', {'form': form, 'razorpay_api_key': razorpay_api_key, 'amount': 10000, 'currency': 'INR'})
+
+def payment(request, donation_id):
+    donation = Donation.objects.get(id=donation_id)
+
+    if request.method == 'POST':
+        # Extract the payment ID and signature from the Razorpay response
+        razorpay_payment_id = request.POST.get('razorpay_payment_id', '')
+        razorpay_signature = request.POST.get('razorpay_signature', '')
+
+        # Update the donation with the payment ID and signature
+        donation.razorpay_payment_id = razorpay_payment_id
+        donation.razorpay_signature = razorpay_signature
+        donation.save()
+
+        return JsonResponse({'status': 'success'})
+
+    context = {
+        'razorpay_api_key': razorpay_api_key,
+        'amount': donation.amount * 100,  # amount in paisa
+        'currency': 'INR',
+        'order_id': donation.razorpay_order_id,
+        'name': donation.name,
+        'email': donation.email,
+        'phone': donation.phone
+    }
+    return render(request, 'payment.html', context)

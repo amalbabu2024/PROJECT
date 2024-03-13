@@ -83,6 +83,8 @@ urlpatterns = [
     path('team_leader_update_task_status/<int:task_id>/', views.team_leader_update_task_status, name='team_leader_update_task_status'),
     path('feedback/', feedback_view, name='feedback_form'),
     path('feedback/thank-you/', feedback_thank_you_view, name='feedback_thank_you'),
+    path('donate/', views.donate, name='donate'),
+    path('payment/<int:donation_id>/', views.payment, name='payment'),
     
 
     
