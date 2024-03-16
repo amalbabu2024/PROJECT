@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ course.name }}</title>
+    <style>
+        body {
+            background-image: url("{% static 'img/task1.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        p {
+            margin-bottom: 20px;
+        }
+        .course-details {
+            margin-bottom: 20px;
+        }
+        .course-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .course-info span {
+            font-weight: bold;
+        }
+        .enroll-btn {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+        .enroll-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ course.name }}</h1>
+        <p>{{ course.description }}</p>
+        <div class="course-details">
+            <div class="course-info">
+                <span>Duration:</span>
+                <span>{{ course.duration }} weeks</span>
+            </div>
+            <div class="course-info">
+                <span>Start Date:</span>
+                <span>{{ course.start_date }}</span>
+            </div>
+            <div class="course-info">
+                <span>End Date:</span>
+                <span>{{ course.end_date }}</span>
+            </div>
+            <!-- Add more course details as needed -->
+        </div>
+        <a href="#" class="enroll-btn">Enroll Now</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Course - {{ course.name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            text-decoration: none;
+            color: #fff;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .update-btn {
+            background-color: #007bff;
+        }
+        
+        .update-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .delete-btn {
+            background-color: #dc3545;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .course-details {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .course-details p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .course-details p strong {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Add additional styles as needed */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Course - {{ course.name }}</h1>
+        <div class="course-details">
+            <p><strong>Description:</strong> {{ course.description }}</p>
+            <p><strong>Duration in Weeks:</strong> {{ course.duration_in_weeks }}</p>
+            <p><strong>Start Date:</strong> {{ course.start_date }}</p>
+            <p><strong>End Date:</strong> {{ course.end_date }}</p>
+            <p><strong>Instructor:</strong> {{ course.instructor }}</p>
+            <!-- Add more course details as needed -->
+        </div>
+        <div class="btn-container">
+            <a href="{% url 'update_course' course.id %}" class="btn update-btn">Update Course</a>
+            <a href="{% url 'delete_course' course.id %}" class="btn delete-btn">Delete Course</a>
+        </div>              
+        <!-- Add more functionalities here -->
+    </div>
+</body>
+</html>

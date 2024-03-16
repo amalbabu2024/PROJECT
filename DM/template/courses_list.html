@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Courses</title>
+    <style>
+        body {
+            background-image: url("{% static 'img/people-hazmat-suits-masks-nuclear-power-station.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .course-details {
+            flex: 1;
+        }
+        .course-name {
+            font-weight: bold;
+        }
+        .know-more-btn {
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .know-more-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Available Courses</h1>
+        <ul>
+            {% for course in courses %}
+            <li>
+                <div class="course-details">
+                    <span class="course-name">{{ course.name }}</span>
+                    <span>{{ course.description }}</span>
+                </div>
+                <a href="{% url 'course_details' course.id %}" class="know-more-btn">Know More</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

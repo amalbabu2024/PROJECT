@@ -1132,27 +1132,57 @@ def team_leader_update_task_status(request, task_id):
 
 
 
-from django.shortcuts import render, redirect
-from .forms import FeedbackForm
+# from django.shortcuts import render, redirect
+# from .forms import FeedbackForm
 
-def feedback_view(request):
-    if request.method == 'POST':
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            feedback = form.save(commit=False)
-            if not feedback.disclose_user_type:
-                feedback.user_identifier = None
-            feedback.save()
-            return redirect('feedback_thank_you')
-    else:
-        form = FeedbackForm()
+# def feedback_view(request):
+#     if request.method == 'POST':
+#         form = FeedbackForm(request.POST)
+#         if form.is_valid():
+#             feedback = form.save(commit=False)
+#             if not feedback.disclose_user_type:
+#                 feedback.user_identifier = None
+#             feedback.save()
+#             return redirect('feedback_thank_you')
+#     else:
+#         form = FeedbackForm()
     
-    return render(request, 'feedback_form.html', {'form': form})
+#     return render(request, 'feedback_form.html', {'form': form})
 
-def feedback_thank_you_view(request):
-    return render(request, 'feedback_thank_you.html')
+# def feedback_thank_you_view(request):
+#     return render(request, 'feedback_thank_you.html')
 
 
+# views.py
+from django.shortcuts import render
+from .models import FeedbackResponse
+from django.http import HttpResponse
+
+def feedback_form(request):
+    if request.method == 'POST':
+        user_type = request.POST.get('user_type', '')
+        # Get the form data based on the user type
+        form_data = {
+            'user_type': user_type,
+            # Add similar fields for other user types
+            'civilian_question1': request.POST.get('civilian_question1', ''),
+            'civilian_question2': request.POST.get('civilian_question2', ''),
+            'civilian_question3': request.POST.get('civilian_question3', ''),
+            'civilian_question4': request.POST.get('civilian_question4', ''),
+            'civilian_question5': request.POST.get('civilian_question5', ''),
+            'civilian_question6': request.POST.get('civilian_question6', ''),
+            'civilian_question7': request.POST.get('civilian_question7', ''),
+            'civilian_question8': request.POST.get('civilian_question8', ''),
+            'civilian_question9': request.POST.get('civilian_question9', ''),
+            'civilian_question10': request.POST.get('civilian_question10', ''),
+        }
+
+        # Save the form data to the database
+        feedback_response = FeedbackResponse(**form_data)
+        feedback_response.save()
+        return HttpResponse('Feedback submitted successfully.')
+
+    return render(request, 'feedback_form.html')
 
 
 
@@ -1228,3 +1258,92 @@ def payment(request, donation_id):
         'phone': donation.phone
     }
     return render(request, 'payment.html', context)
+
+
+
+
+from django.shortcuts import render
+
+def training_promotion(request):
+    return render(request, 'training_promotion.html')
+
+
+from django.shortcuts import render
+from .models import Course
+
+def courses_list(request):
+    courses = Course.objects.all()
+    return render(request, 'courses_list.html', {'courses': courses})
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Course
+from .forms import CourseForm
+
+@login_required
+def create_course(request):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.created_by = request.user
+            if hasattr(request.user, 'organization'):
+                course.organization = request.user.organization
+            course.save()
+            return redirect('view_courses')
+    else:
+        form = CourseForm()
+    return render(request, 'create_course.html', {'form': form})
+
+@login_required
+def view_courses(request):
+    courses = Course.objects.filter(created_by=request.user)
+    return render(request, 'view_courses.html', {'courses': courses})
+
+@login_required
+def manage_course(request, course_id):
+    try:
+        course = Course.objects.get(pk=course_id, created_by=request.user)
+    except Course.DoesNotExist:
+        return redirect('view_courses')
+    # Add more functionalities as needed (e.g., edit, delete)
+    return render(request, 'manage_course.html', {'course': course})
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Course
+
+def delete_course(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    course.delete()
+    return redirect('view_courses')
+
+def update_course(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    if request.method == 'POST':
+        # Update the course with the new data from the form
+        course.name = request.POST.get('name')
+        course.description = request.POST.get('description')
+        course.duration_in_weeks = request.POST.get('duration_in_weeks')
+        course.start_date = request.POST.get('start_date')
+        course.end_date = request.POST.get('end_date')
+        course.instructor = request.POST.get('instructor')
+        course.save()
+        return redirect('view_courses')
+    return render(request, 'update_course.html', {'course': course})
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Course
+
+def course_details(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    return render(request, 'course_details.html', {'course': course})
+
+
+
+
+
+

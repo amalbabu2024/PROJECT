@@ -147,13 +147,13 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['task_name', 'description', 'deadline']
 
-from django import forms
-from .models import Feedback
+# from django import forms
+# from .models import Feedback
 
-class FeedbackForm(forms.ModelForm):
-    class Meta:
-        model = Feedback
-        fields = ['user_type', 'feedback_text', 'user_identifier', 'disclose_user_type']
+# class FeedbackForm(forms.ModelForm):
+#     class Meta:
+#         model = Feedback
+#         fields = ['user_type', 'feedback_text', 'user_identifier', 'disclose_user_type']
 
 
 
@@ -169,3 +169,16 @@ class DonationForm(forms.Form):
     name = forms.CharField(label='Name', max_length=100)
     email = forms.EmailField(label='Email')
     phone = forms.CharField(label='Phone', max_length=15)
+
+
+
+from django import forms
+from .models import Course
+
+class CourseForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['name', 'description', 'duration_in_weeks', 'start_date', 'end_date', 'instructor']
+
+
+

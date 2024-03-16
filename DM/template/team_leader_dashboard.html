@@ -127,8 +127,8 @@
             <a href="/view_organization_resources" class="navbar-button"><i class="far fa-calendar-alt"></i>View Resouces</a>
             <a href="{% url 'team_leader_assign_task' user.id %}" class="navbar-button"><i class="fas fa-file-alt"></i>Task Task</a>
             <a href="{% url 'team_leader_task_list' user.id %}" class="navbar-button"><i class="fas fa-file-alt"></i>Task List</a>
-            <a href="#" class="navbar-button"><i class="fas fa-envelope"></i>Messages</a>
-            <a href="#" class="navbar-button"><i class="fas fa-bell"></i>Notifications</a>
+            <a href="{% url 'create_course' %}" class="navbar-button"><i class="fas fa-envelope"></i>Add Course</a>
+            <a href="/view_courses" class="navbar-button"><i class="fas fa-bell"></i>Manage Couses</a>
             <!-- Add more buttons for additional functionalities -->
             <button class="logout-button" onclick="location.href='/logout'">Logout</button>
         </nav>

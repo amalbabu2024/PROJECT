@@ -305,10 +305,35 @@ class Task(models.Model):
         return self.task_name
     
     
+# from django.db import models
+
+# class Feedback(models.Model):
+#     USER_TYPES = [
+#         ('civilian', 'Civilian'),
+#         ('coordinator', 'Coordinator'),
+#         ('manager', 'Manager'),
+#         ('team_leader', 'Team Leader'),
+#         ('team_member', 'Team Member'),
+#         ('unregistered', 'Not a Registered User'),
+#         ('no_disclosure', 'Not Interested in Disclosing User Type'),
+#     ]
+
+#     user_type = models.CharField(max_length=20, choices=USER_TYPES)
+#     feedback_text = models.TextField()
+#     user_identifier = models.CharField(max_length=100, blank=True, null=True)
+#     disclose_user_type = models.BooleanField(default=False)
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     def __str__(self):
+#         return f"Feedback - {self.user_type}"
+
+
+
+
 from django.db import models
 
-class Feedback(models.Model):
-    USER_TYPES = [
+class FeedbackResponse(models.Model):
+    user_type_choices = [
         ('civilian', 'Civilian'),
         ('coordinator', 'Coordinator'),
         ('manager', 'Manager'),
@@ -318,14 +343,23 @@ class Feedback(models.Model):
         ('no_disclosure', 'Not Interested in Disclosing User Type'),
     ]
 
-    user_type = models.CharField(max_length=20, choices=USER_TYPES)
-    feedback_text = models.TextField()
-    user_identifier = models.CharField(max_length=100, blank=True, null=True)
-    disclose_user_type = models.BooleanField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
+    user_type = models.CharField(max_length=50, choices=user_type_choices)
+    # Add fields for each question
+    # Example for civilian questions
+    civilian_question1 = models.TextField(blank=True)
+    civilian_question2 = models.TextField(blank=True)
+    civilian_question3 = models.TextField(blank=True)
+    civilian_question4 = models.TextField(blank=True)
+    civilian_question5 = models.TextField(blank=True)
+    civilian_question6 = models.TextField(blank=True)
+    civilian_question7 = models.TextField(blank=True)
+    civilian_question8 = models.TextField(blank=True)
+    civilian_question9 = models.TextField(blank=True)
+    civilian_question10 = models.TextField(blank=True)
+    # Add similar fields for other user types
 
     def __str__(self):
-        return f"Feedback - {self.user_type}"
+        return f"{self.user_type} Feedback"
 
 
 
@@ -348,3 +382,21 @@ class Donation(models.Model):
 
     def __str__(self):
         return f"Donation {self.pk} by {self.name}"
+
+
+
+
+class Course(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    duration_in_weeks = models.IntegerField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    instructor = models.CharField(max_length=255)
+    organization = models.ForeignKey(Organization, on_delete=models.CASCADE, blank=True, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+    
+    

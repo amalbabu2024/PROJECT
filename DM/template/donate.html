@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,4 +87,185 @@
 
 </body>
 </html>
+ {% endcomment %}
 
+
+
+
+
+
+
+
+ {% load static %}
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Donate</title>
+     <link rel="stylesheet" href="path_to_your_css_file.css">
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <style>
+         /* Advanced CSS styles */
+         body {
+             font-family: Arial, sans-serif;
+             background-image: url({% static 'img/partners.jpg' %});
+             background-size: cover;
+             background-repeat: no-repeat;
+             background-attachment: fixed;
+             margin: 0;
+             padding: 0;
+             height: 100vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             color: white;
+         }
+         .container {
+             max-width: 800px;
+             margin: 0 auto;
+             padding: 20px;
+             background-color: rgba(255, 255, 255, 0.5);
+             border-radius: 20px;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+         }
+         h1 {
+             text-align: center;
+             color: #333;
+         }
+         form {
+             margin-top: 20px;
+         }
+         label {
+             font-weight: bold;
+         }
+         input[type="text"],
+         input[type="email"] {
+             background-color: rgba(255, 255, 255, 0.7);
+             width: 100%;
+             padding: 10px;
+             margin-bottom: 10px;
+             border: 1px solid #ccc;
+             border-radius: 20px;
+             box-sizing: border-box;
+         }
+         .error-message {
+             color: #dc3545;
+             font-size: 0.8em;
+             margin-top: 5px;
+         }
+         button {
+             display: block;
+             width: 100%;
+             padding: 10px;
+             background-color: #f37254;
+             color: #fff;
+             border: none;
+             border-radius: 20px;
+             cursor: pointer;
+         }
+         button:hover {
+             background-color: #d95b35;
+         }
+         input.is-invalid {
+             border-color: #dc3545 !important;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="container">
+         <h1>Donate Now</h1>
+         <p>Your donation will help provide relief to those affected by disasters. Thank you for your support!</p>
+         <form id="donate-form" action="{% url 'donate' %}" method="post">
+             {% csrf_token %}
+             <label for="amount">Amount:</label>
+             <input type="text" id="amount" name="amount" placeholder="Enter amount" required><br>
+             <div id="amount-error" class="error-message"></div><br>
+             <label for="name">Name:</label>
+             <input type="text" id="name" name="name" placeholder="Enter your name" required><br>
+             <div id="name-error" class="error-message"></div><br>
+             <label for="email">Email:</label>
+             <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
+             <div id="email-error" class="error-message"></div><br>
+             <label for="phone">Phone:</label>
+             <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required><br>
+             <div id="phone-error" class="error-message"></div><br>
+             <button id="pay-button">Donate</button>
+         </form>
+     </div>
+ 
+     <script>
+         $(document).ready(function() {
+             function validateName() {
+                 var name = $('#name').val();
+                 var nameRegex = /^[a-zA-Z]+$/;
+                 if (!nameRegex.test(name)) {
+                     $('#name').addClass('is-invalid');
+                     $('#name-error').text('Name should contain only letters');
+                     return false;
+                 } else {
+                     $('#name').removeClass('is-invalid');
+                     $('#name-error').text('');
+                     return true;
+                 }
+             }
+ 
+             function validateEmail() {
+                 var email = $('#email').val();
+                 var emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+                 if (!emailRegex.test(email)) {
+                     $('#email').addClass('is-invalid');
+                     $('#email-error').text('Enter a valid email address');
+                     return false;
+                 } else {
+                     $('#email').removeClass('is-invalid');
+                     $('#email-error').text('');
+                     return true;
+                 }
+             }
+ 
+             function validateAmount() {
+                 var amount = $('#amount').val();
+                 var amountRegex = /^[1-9][0-9]{0,4}$/; // 1 to 100000
+                 if (!amountRegex.test(amount)) {
+                     $('#amount').addClass('is-invalid');
+                     $('#amount-error').text('Enter a valid amount between 1 and 100000');
+                     return false;
+                 } else {
+                     $('#amount').removeClass('is-invalid');
+                     $('#amount-error').text('');
+                     return true;
+                 }
+             }
+ 
+             function validatePhone() {
+                 var phone = $('#phone').val();
+                 var phoneRegex = /^\d{10}$/;
+                 if (!phoneRegex.test(phone)) {
+                     $('#phone').addClass('is-invalid');
+                     $('#phone-error').text('Enter a valid 10-digit phone number');
+                     return false;
+                 } else {
+                     $('#phone').removeClass('is-invalid');
+                     $('#phone-error').text('');
+                     return true;
+                 }
+             }
+ 
+             $('#name').on('input', validateName);
+             $('#email').on('input', validateEmail);
+             $('#amount').on('input', validateAmount);
+             $('#phone').on('input', validatePhone);
+ 
+             $('#donate-form').submit(function(event) {
+                 if (!validateName() || !validateEmail() || !validateAmount() || !validatePhone()) {
+                     event.preventDefault();
+                     alert('Please correct the errors in the form.');
+                 }
+             });
+         });
+     </script>
+ </body>
+ </html>
+ 

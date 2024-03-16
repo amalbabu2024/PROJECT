@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Management Training and Preparedness</title>
+    <style>
+        body {
+            background-image: url("{% static 'img/people-wearing-life-jackets-migration-crisis.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+        p {
+            text-align: justify;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 20px;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Join Our Disaster Management Training Courses</h1>
+        <p>
+            Disasters can strike at any moment, and being prepared can make all the difference. Our organization offers a range of training courses designed to equip you with the skills and knowledge needed to respond effectively in times of crisis.
+        </p>
+        <p>
+            Whether you're a seasoned professional or new to the field, our courses cater to all levels of experience. Join us in our mission to build a more resilient community and make a positive impact when it's needed most.
+        </p>
+        <p>
+            Together, we can make a difference. Join our courses today and be part of the solution.
+        </p>
+        <h2>Why Training and Preparedness Are Important:</h2>
+        <ul>
+            <li>Reduce the risk of injury or harm to yourself and others.</li>
+            <li>Effectively respond to emergencies and provide assistance to those in need.</li>
+            <li>Contribute to community resilience and recovery efforts.</li>
+            <li>Enhance your skills and knowledge in disaster management.</li>
+        </ul>
+        <div class="center">
+            <a href="{% url 'courses_list' %}" class="btn">View Available Courses</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Course</title>
+    <style>
+        body {
+            background-image: url("{% static 'img/people-hazmat-suits-masks-nuclear-power-station.jpg' %}"); /* Add the path to your image file */
+            background-size: cover; /* Adjust as needed */
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+        }
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Course - {{ course.name }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_name">Name:</label>
+            <input type="text" id="id_name" name="name" value="{{ course.name }}">
+            <label for="id_description">Description:</label>
+            <textarea id="id_description" name="description">{{ course.description }}</textarea>
+            <label for="id_duration_in_weeks">Duration in Weeks:</label>
+            <input type="text" id="id_duration_in_weeks" name="duration_in_weeks" value="{{ course.duration_in_weeks }}">
+            <label for="id_start_date">Start Date:</label>
+            <input type="date" id="id_start_date" name="start_date" value="{{ course.start_date }}">
+            <label for="id_end_date">End Date:</label>
+            <input type="date" id="id_end_date" name="end_date" value="{{ course.end_date }}">
+            <label for="id_instructor">Instructor:</label>
+            <input type="text" id="id_instructor" name="instructor" value="{{ course.instructor }}">
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</body>
+</html>

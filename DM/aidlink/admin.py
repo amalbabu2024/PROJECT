@@ -46,3 +46,12 @@ admin.site.register(Organization_Resources)
 
 
 
+from django.contrib import admin
+from .models import Course
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'duration_in_weeks', 'start_date', 'end_date', 'instructor', 'organization', 'created_by')
+    list_filter = ('start_date', 'end_date', 'instructor', 'organization', 'created_by')
+    search_fields = ('name', 'description', 'instructor')
+    date_hierarchy = 'start_date'
