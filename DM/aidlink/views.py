@@ -97,6 +97,9 @@ def managerreg(request):
 
         manager = Manager(user=user, organization=organization)  # Assign organization to manager
         manager.save()
+        
+        user.organization_id = manager.organization_id
+        user.save()
 
         return redirect('/admindashboard')
 
@@ -126,6 +129,9 @@ def team_leader_registration(request):
 
         team_leader = TeamLeader(user=user, organization=organization, manager_id=manager_id)
         team_leader.save()
+        
+        user.organization_id = team_leader.organization_id
+        user.save()
 
         return redirect('/managerdashboard')  # Redirect to appropriate dashboard
 
@@ -155,6 +161,9 @@ def team_member_registration(request):
 
         team_member = TeamMember(user=user, organization=organization, team_leader_id=team_leader_id)
         team_member.save()
+        
+        user.organization_id = team_member.organization_id
+        user.save()
 
         return redirect('/teamleaderdashboard')  # Redirect to appropriate dashboard
 

@@ -8,6 +8,7 @@ class User(AbstractUser):
     is_manager = models.BooleanField(default=False)
     is_team_leader = models.BooleanField(default=False)
     is_team_member = models.BooleanField(default=False)
+    organization_id = models.IntegerField(default=0)
     
     def __str__(self):
         roles = []
