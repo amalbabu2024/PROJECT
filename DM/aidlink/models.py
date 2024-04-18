@@ -347,16 +347,16 @@ class FeedbackResponse(models.Model):
     user_type = models.CharField(max_length=50, choices=user_type_choices)
     # Add fields for each question
     # Example for civilian questions
-    civilian_question1 = models.TextField(blank=True)
-    civilian_question2 = models.TextField(blank=True)
-    civilian_question3 = models.TextField(blank=True)
-    civilian_question4 = models.TextField(blank=True)
-    civilian_question5 = models.TextField(blank=True)
-    civilian_question6 = models.TextField(blank=True)
-    civilian_question7 = models.TextField(blank=True)
-    civilian_question8 = models.TextField(blank=True)
-    civilian_question9 = models.TextField(blank=True)
-    civilian_question10 = models.TextField(blank=True)
+    question1 = models.TextField(blank=True)
+    question2 = models.TextField(blank=True)
+    question3 = models.TextField(blank=True)
+    question4 = models.TextField(blank=True)
+    question5 = models.TextField(blank=True)
+    question6 = models.TextField(blank=True)
+    question7 = models.TextField(blank=True)
+    question8 = models.TextField(blank=True)
+    question9 = models.TextField(blank=True)
+    question10 = models.TextField(blank=True)
     # Add similar fields for other user types
 
     def __str__(self):
@@ -399,5 +399,5 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-    
-    
+
+

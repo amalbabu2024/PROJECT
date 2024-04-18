@@ -1355,4 +1355,29 @@ def course_details(request, course_id):
 
 
 
+from django.core.mail import send_mail
+from django.conf import settings
+from django.shortcuts import render
+from aidlink.models import User
 
+def admin_alert_email(request):
+    if request.method == 'POST':
+        subject = request.POST.get('subject', '')
+        message = request.POST.get('message', '')
+
+        # Retrieve all users
+        users = User.objects.all()
+
+        # Send email to each user
+        for user in users:
+            send_mail(
+                subject,
+                message,
+                settings.EMAIL_HOST_USER,
+                [user.email],
+                fail_silently=False,
+            )
+
+        return render(request, 'admin_alert_email_success.html')
+    else:
+        return render(request, 'admin_alert_email_form.html')

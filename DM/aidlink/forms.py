@@ -147,18 +147,6 @@ class TaskForm(forms.ModelForm):
         model = Task
         fields = ['task_name', 'description', 'deadline']
 
-# from django import forms
-# from .models import Feedback
-
-# class FeedbackForm(forms.ModelForm):
-#     class Meta:
-#         model = Feedback
-#         fields = ['user_type', 'feedback_text', 'user_identifier', 'disclose_user_type']
-
-
-
-
-
 
 
 
@@ -182,3 +170,8 @@ class CourseForm(forms.ModelForm):
 
 
 
+from django import forms
+
+class AdminAlertForm(forms.Form):
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField(widget=forms.Textarea)

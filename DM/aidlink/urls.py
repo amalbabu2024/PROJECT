@@ -6,9 +6,7 @@ from django.conf.urls.static import static
 from .views import send_help_request, view_help_requests, edit_help_request, delete_help_request
 from .views import set_request_status
 from .views import volunteer_request, volunteer_request_success, manage_volunteer_requests,view_volunteer_request,view_civilian_request
-# from .views import feedback_view, feedback_thank_you_view
 from .views import feedback_form
-
 
 
 urlpatterns = [
@@ -82,8 +80,6 @@ urlpatterns = [
     path('team-member/task-list/', views.team_member_task_list, name='team_member_task_list'),
     path('team_member_update_task_status/<int:task_id>/', views.team_member_update_task_status, name='team_member_update_task_status'),
     path('team_leader_update_task_status/<int:task_id>/', views.team_leader_update_task_status, name='team_leader_update_task_status'),
-    # path('feedback/', feedback_view, name='feedback_form'),
-    # path('feedback/thank-you/', feedback_thank_you_view, name='feedback_thank_you'),
     path('feedback/', feedback_form, name='feedback_form'),
     path('donate/', views.donate, name='donate'),
     path('payment/<int:donation_id>/', views.payment, name='payment'),
@@ -95,6 +91,8 @@ urlpatterns = [
     path('delete_course/<int:course_id>/', views.delete_course, name='delete_course'),
     path('update_course/<int:course_id>/', views.update_course, name='update_course'),
     path('course/<int:course_id>/', views.course_details, name='course_details'),
+    path('admin_alert_email/', views.admin_alert_email, name='admin_alert_email'),
+    
     
 
 
